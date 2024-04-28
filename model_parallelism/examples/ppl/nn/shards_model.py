@@ -20,7 +20,7 @@ class NNShard1(NeuralNetwork):
         x = self.flatten(x)
         with self._lock:
             out =  self.seq(x)
-        print(f"Forwared: worker[1]: device: {self.device}")
+        print(f"Run forward on worker[1] - Device: {self.device}")
         return out.cpu()
     
 class NNShard2(NeuralNetwork):
@@ -41,5 +41,5 @@ class NNShard2(NeuralNetwork):
         x = self.flatten(x)
         with self._lock:
             out =  self.seq(x)
-        print(f"Forwared: worker[2]: device: {self.device}")
+        print(f"Run forward on worker[2] - Device: {self.device}")
         return out.cpu()
