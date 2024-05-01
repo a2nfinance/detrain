@@ -1,6 +1,7 @@
 import torch
-
-def test_loop(dataloader, tp_model, loss_fn):
+from torch.distributed._tensor import DTensor
+from torch.distributed.tensor.parallel import loss_parallel
+def test_loop(dataloader, tp_model, loss_fn, device):
     # Set the model to evaluation mode - important for batch normalization and dropout layers
     # Unnecessary in this situation but added for best practices
     tp_model.eval()
@@ -12,7 +13,9 @@ def test_loop(dataloader, tp_model, loss_fn):
     # also serves to reduce unnecessary gradient computations and memory usage for tensors with requires_grad=True
     with torch.no_grad():
         for X, y in dataloader:
+            X, y = X.to(device), y.to(device)
             pred = tp_model(X)
+            y = DTensor.from_local(y, pred.device_mesh, pred.placements)
             test_loss += loss_fn(pred, y).item()
             correct += (pred.argmax(1) == y).type(torch.float).sum().item()
 

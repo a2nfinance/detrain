@@ -1,17 +1,14 @@
-from torch.distributed.tensor.parallel import loss_parallel
-
-def train_loop(dataloader, tp_model, loss_fn, optimizer, batch_size, device, rank):
-    tp_model.train()
+def sequence_train_loop(dataloader, tp_model, loss_fn, optimizer, batch_size, device, rank):
     size = len(dataloader.dataset)
+    tp_model.train()
+    # Set the model to training mode - important for batch normalization and dropout layers
+    # Unnecessary in this situation but added for best practices
     for batch, (X, y) in enumerate(dataloader):
         X, y = X.to(device), y.to(device)
         pred = tp_model(X)
-       
-        with loss_parallel():
-            loss = loss_fn(pred, y)
-            loss.backward()
-            optimizer.step()
-            optimizer.zero_grad()
+        loss = loss_fn(pred, y)
+        loss.backward()
+        optimizer.step()
         if (rank == 0):
             if batch % 100 == 0:
                 loss, current = loss.item(), batch * batch_size + len(X)
