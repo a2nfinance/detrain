@@ -3,7 +3,7 @@ import torch.nn as nn
 import time
 import os
 from detrain.ppl.args_util import get_args
-from detrain.tp.train_eval import train_eval
+from detrain.tp.sequence_train_eval import sequence_train_eval
 from detrain.tp.model_utils import get_tp_model
 from detrain.ppl.dataset_util import get_torchvision_dataset
 import torch.optim as optim
@@ -32,21 +32,19 @@ if __name__=="__main__":
     optimizer_class = optim.SGD
     model = NeuralNetwork().to(device)
 
-   
+
     mesh_shape = (world_size, )
     tp_model = get_tp_model(model, {
         "in_proj": ColwiseParallel(
-            use_local_output=False,
+            input_layouts=Shard(0),
         ),
         "linear1": RowwiseParallel(
-            use_local_output=False,
         ),
         "out_proj": ColwiseParallel(
-            use_local_output=False,
+            output_layouts=Shard(0),
         ),
     } , device, mesh_shape)
 
-    
     # Create an optimizer for the parallelized module.
     optimizer = torch.optim.SGD(tp_model.parameters(), lr=lr)
     
@@ -55,7 +53,7 @@ if __name__=="__main__":
     (train_dataloader, test_dataloader) = get_torchvision_dataset("MNIST", batch_size)
 
     tik = time.time()
-    train_eval(
+    sequence_train_eval(
         tp_model, 
         train_dataloader, 
         test_dataloader, 

@@ -1,13 +1,15 @@
-import torch
 import torch.nn as nn
 import time
 import os
+import sys
 from detrain.ppl.args_util import get_args
-from detrain.tp.train_eval import train_eval
-from detrain.tp.model_utils import get_tp_model
 from detrain.ppl.dataset_util import get_torchvision_dataset
-import torch.optim as optim
+from detrain.fsdp_tp.train_eval import train_eval
+from detrain.fsdp_tp.model_2d import get_model_2d
+
 from base_model import NeuralNetwork
+
+import torch.optim as optim
 from torch.distributed.tensor.parallel import (
     ColwiseParallel,
     RowwiseParallel,
@@ -27,28 +29,27 @@ if __name__=="__main__":
     if (args.gpu is not None):
         device = "cuda"
     
+
     # Define optimizer & loss_fn
     loss_fn = nn.CrossEntropyLoss(reduction="mean")
-    optimizer_class = optim.SGD
-    model = NeuralNetwork().to(device)
 
-   
-    mesh_shape = (world_size, )
-    tp_model = get_tp_model(model, {
+    # Model
+    model = NeuralNetwork().to(device)
+    tp_size = 2
+    mode_2d = get_model_2d(model, {
         "in_proj": ColwiseParallel(
-            use_local_output=False,
+            input_layouts=Shard(0),
         ),
         "linear1": RowwiseParallel(
-            use_local_output=False,
         ),
         "out_proj": ColwiseParallel(
-            use_local_output=False,
+            output_layouts=Shard(0),
         ),
-    } , device, mesh_shape)
+    } , device, tp_size)
 
     
     # Create an optimizer for the parallelized module.
-    optimizer = torch.optim.SGD(tp_model.parameters(), lr=lr)
+    optimizer = optim.SGD(mode_2d.parameters(), lr=lr)
     
     # Dataloaders
 
@@ -56,7 +57,7 @@ if __name__=="__main__":
 
     tik = time.time()
     train_eval(
-        tp_model, 
+        mode_2d, 
         train_dataloader, 
         test_dataloader, 
         loss_fn, 
