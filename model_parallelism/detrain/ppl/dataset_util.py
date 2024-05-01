@@ -1,4 +1,3 @@
-import torch
 from torch.utils.data import DataLoader
 from torchvision import datasets
 from torchvision.transforms import ToTensor
@@ -37,15 +36,13 @@ def get_torchvision_dataset(name, batch_size):
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ])
         train_dataset = datasets.ImageNet(
-            root='/mnt/d/WP/Blockchain/Projects/detrain/data', 
+            root='data', 
             split="train",
-            download=True,
             transform=transform
         )
         test_dataset = datasets.ImageNet(
-            root='/mnt/d/WP/Blockchain/Projects/detrain/data', 
+            root='data', 
             split="eval",
-            download=True,
             transform=transform
         )
         train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=2)

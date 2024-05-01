@@ -26,7 +26,7 @@ def run_worker(rank, world_size, model_params, train_dataloader, test_dataloader
             # Shards
             model_params[3]
         )
-        optimizer = optimizer = DistributedOptimizer(
+        optimizer = DistributedOptimizer(
             optimized_class,
             model.parameter_rrefs(),
             lr=lr,
