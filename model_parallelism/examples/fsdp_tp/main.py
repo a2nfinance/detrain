@@ -6,6 +6,7 @@ from detrain.ppl.args_util import get_args
 from detrain.ppl.dataset_util import get_torchvision_dataset
 from detrain.fsdp_tp.train_eval import train_eval
 from detrain.fsdp_tp.model_2d import get_model_2d
+from detrain.tp.model_utils import get_tp_model
 
 from base_model import NeuralNetwork
 
@@ -19,6 +20,7 @@ from torch.distributed._tensor import Shard
 if __name__=="__main__":
     args = get_args()
     world_size = int(os.environ["WORLD_SIZE"])
+    print(world_size)
     # Get args
     epochs = int(args.epochs)
     batch_size = int(args.batch_size)
@@ -36,7 +38,7 @@ if __name__=="__main__":
     # Model
     model = NeuralNetwork().to(device)
     tp_size = 2
-    mode_2d = get_model_2d(model, {
+    model_2d = get_model_2d(model, {
         "in_proj": ColwiseParallel(
             input_layouts=Shard(0),
         ),
@@ -46,10 +48,8 @@ if __name__=="__main__":
             output_layouts=Shard(0),
         ),
     } , device, tp_size)
-
-    
     # Create an optimizer for the parallelized module.
-    optimizer = optim.SGD(mode_2d.parameters(), lr=lr)
+    optimizer = optim.SGD(model_2d.parameters(), lr=lr)
     
     # Dataloaders
 
@@ -57,7 +57,7 @@ if __name__=="__main__":
 
     tik = time.time()
     train_eval(
-        mode_2d, 
+        model_2d, 
         train_dataloader, 
         test_dataloader, 
         loss_fn, 

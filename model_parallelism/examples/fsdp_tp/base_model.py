@@ -12,7 +12,6 @@ class NeuralNetwork(nn.Module):
 
     def forward(self, x):
         x = self.flatten(x)
-        
         x = self.in_proj(x)
         x = self.relu1(x)
         x = self.linear1(x)
