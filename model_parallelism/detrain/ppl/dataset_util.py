@@ -3,8 +3,8 @@ from torchvision import datasets
 from torchvision.transforms import ToTensor
 import torchvision.transforms as transforms
 
-def get_torchvision_dataset(name, batch_size):
-    if (name == "MNIST"):
+def get_torchvision_dataset(name, batch_size, distributed=False):
+    if (name == "MNIST" and distributed == False):
         training_data = datasets.FashionMNIST(
         root="data",
         train=True,
@@ -23,7 +23,7 @@ def get_torchvision_dataset(name, batch_size):
         test_dataloader = DataLoader(test_data, batch_size=batch_size)
 
         return (train_dataloader, test_dataloader)
-    elif (name == "ImageNet"):
+    elif (name == "ImageNet" and distributed == False):
         #Prepare transformations for data augmentation
         transform = transforms.Compose([
             transforms.Resize(256),
@@ -47,6 +47,25 @@ def get_torchvision_dataset(name, batch_size):
         )
         train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=2)
         test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=True, num_workers=2)
+        return (train_dataloader, test_dataloader)
+    elif (name == "MNIST" and distributed == True):
+        training_data = datasets.FashionMNIST(
+        root="data",
+        train=True,
+        download=True,
+        transform=ToTensor()
+        )
+
+        test_data = datasets.FashionMNIST(
+            root="data",
+            train=False,
+            download=True,
+            transform=ToTensor()
+        )
+
+        train_dataloader = DataLoader(training_data, batch_size=batch_size)
+        test_dataloader = DataLoader(test_data, batch_size=batch_size)
+
         return (train_dataloader, test_dataloader)
          
 
