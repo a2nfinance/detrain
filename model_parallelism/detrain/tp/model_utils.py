@@ -3,12 +3,10 @@ from torch.distributed._tensor.device_mesh import init_device_mesh
 from torch.distributed.tensor.parallel import (
     parallelize_module
 )
-# Device Type: CUDA, CPU...
-# Example:
-# parallelize_plan={
-#     "in_proj": ColwiseParallel(),
-#     "out_proj": RowwiseParallel(),
-# }
+import torch.distributed as dist
+import torch
+import os
+
 def get_tp_model(model, parallelize_plan, device_type, mesh_shape):
     device_mesh = init_device_mesh(device_type=device_type, mesh_shape=mesh_shape)
     model = model.to(device_type)
@@ -18,3 +16,10 @@ def get_tp_model(model, parallelize_plan, device_type, mesh_shape):
         parallelize_plan=parallelize_plan,
     )
     return tp_model
+
+def save_model(model, name):
+    rank = int(os.environ["RANK"])
+    dist.barrier()
+    states = model.state_dict()
+    if rank == 0:
+        torch.save(states, f"{name}.pt")

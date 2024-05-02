@@ -17,8 +17,6 @@ def test_loop(dataloader, tp_model, loss_fn, device, rank):
                 pred = tp_model(X)
                 # Loss
                 tp_loss[0] += loss_fn(pred, y).item()
-                pred = DTensor.to_local(pred)
-
                 # Correct
                 tp_loss[1] += (pred.argmax(1) == y).type(torch.float).sum().item()
 
