@@ -28,17 +28,18 @@ if __name__=="__main__":
         device = "cuda"
     
     # Define optimizer & loss_fn
-    loss_fn = nn.CrossEntropyLoss(reduction="mean")
+    loss_fn = nn.CrossEntropyLoss()
     optimizer_class = optim.SGD
     model = NeuralNetwork().to(device)
 
 
     mesh_shape = (world_size, )
-    tp_model = get_tp_model(model, {
+    sp_model = get_tp_model(model, {
         "in_proj": ColwiseParallel(
             input_layouts=Shard(0),
         ),
         "linear1": RowwiseParallel(
+            
         ),
         "out_proj": ColwiseParallel(
             output_layouts=Shard(0),
@@ -46,7 +47,7 @@ if __name__=="__main__":
     } , device, mesh_shape)
 
     # Create an optimizer for the parallelized module.
-    optimizer = torch.optim.SGD(tp_model.parameters(), lr=lr)
+    optimizer = torch.optim.AdamW(sp_model.parameters(), lr=lr, foreach=True)
     
     # Dataloaders
 
@@ -54,7 +55,7 @@ if __name__=="__main__":
 
     tik = time.time()
     sequence_train_eval(
-        tp_model, 
+        sp_model, 
         train_dataloader, 
         test_dataloader, 
         loss_fn, 

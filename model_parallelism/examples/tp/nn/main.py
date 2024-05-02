@@ -4,7 +4,7 @@ import time
 import os
 from detrain.ppl.args_util import get_args
 from detrain.tp.train_eval import train_eval
-from detrain.tp.model_utils import get_tp_model
+from detrain.tp.model_utils import get_tp_model, save_model
 from detrain.ppl.dataset_util import get_torchvision_dataset
 import torch.optim as optim
 from base_model import NeuralNetwork
@@ -42,6 +42,7 @@ if __name__=="__main__":
             use_local_output=False,
         ),
         "out_proj": ColwiseParallel(
+
             use_local_output=False,
         ),
     } , device, mesh_shape)
@@ -67,3 +68,4 @@ if __name__=="__main__":
     )
     tok = time.time()
     print(f"Execution time = {tok - tik}")
+    save_model(model, "NN_TP")
