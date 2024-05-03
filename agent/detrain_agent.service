@@ -1,0 +1,15 @@
+[Unit]
+Description=DeTrain Agent
+ 
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/usr/bin/python3 /mnt/data/detrain/agent/main.py "DeTrain Agent Daemon"
+Restart=always
+WorkingDirectory=/
+Nice=19
+LimitNOFILE=16384
+ 
+[Install]
+WantedBy=multi-user.target
