@@ -21,7 +21,7 @@ app.add_middleware(
 async def execcute_training(request: Request):
     command =  await request.body()
     console_log = single_execute(command)
-    return StreamingResponse(chain(console_log, ["done"]), media_type="text/event-stream")
+    return StreamingResponse(console_log, media_type="text/event-stream")
 
 @app.post("/do/")
 async def do_command(request: Request):
