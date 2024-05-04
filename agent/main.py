@@ -1,14 +1,34 @@
 from fastapi import FastAPI, Request
-from command import execute
+from fastapi.responses import StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
+from command import single_execute, manage_command
+import time
+from itertools import chain
 import uvicorn
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=[ "X-Experimental-Stream-Data"],  # this is needed for streaming data header to be read by the client
+)
 
-@app.post("/command/")
+@app.post("/execute/")
+async def execcute_training(request: Request):
+    command =  await request.body()
+    console_log = single_execute(command)
+    return StreamingResponse(chain(console_log, ["done"]))
+
+@app.post("/do/")
 async def do_command(request: Request):
     command =  await request.body()
-    return execute(command)
+    result = manage_command(command)
+    return result
+
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="127.0.0.1", port=5000, log_level="info")
+    uvicorn.run("main:app", host="localhost", port=5000, log_level="info")
