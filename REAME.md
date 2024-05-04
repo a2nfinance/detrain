@@ -28,6 +28,10 @@ curl -i -X POST -H "Content-Type: application/text" -d "{\"command\":\"sdsadasd\
 ```
 
 ```
-curl -d "ls" -H "Content-Type: plain/text" -X POST http://localhost:5000/command/
-curl -d "mkdir test;ls" -H "Content-Type: plain/text" -X POST http://localhost:5000/command/
+curl -d "ls" -H "Content-Type: plain/text" -X POST http://localhost:5000/do/
+curl -d "ls" -H "Content-Type: plain/text" -X POST http://localhost:5000/do/
+curl -X GET http://localhost:5000/status
+curl -d 'cd /mnt/d/WP/Blockchain/Projects/detrain/model_parallelism/examples/tp/nn/; torchrun --nnodes=1 --nproc_per_node=2 --rdzv_id=101 --rdzv-backend=c10d --rdzv_endpoint="localhost:9999" main.py --epochs=4 --batch_size=50 --lr=0.001' -H "Content-Type: plain/text" -X POST http://localhost:5000/execute/
+
+curl -d 'cd /detrain/model_parallelism/examples/tp/nn/; torchrun --nnodes=1 --nproc_per_node=2 --rdzv_id=101 --rdzv-backend=c10d --rdzv_endpoint="localhost:9999" main.py --epochs=4 --batch_size=50 --lr=0.001' -H "Content-Type: plain/text" -X POST http://35.240.232.243:5000/execute/
 ```
