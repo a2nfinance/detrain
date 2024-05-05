@@ -1,4 +1,4 @@
-import { TESTNET_EXPLORER } from "@/core/config";
+import { TESTNET_EXPLORER } from "@/config";
 
 export const useAddress = () => {
     const getShortAddress = (address: string) => {
