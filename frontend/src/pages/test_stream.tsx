@@ -1,5 +1,5 @@
+import { Input } from "antd";
 import { useRef, useState, useCallback } from "react";
-import { EventStreamContentType, fetchEventSource } from '@microsoft/fetch-event-source'
 
 function App() {
 
@@ -27,6 +27,9 @@ function App() {
       console.log('got chunk of', chunk.length, 'bytes')
       text += chunk;
       console.log('text so far is', text.length, 'bytes\n');
+
+      let element = document.getElementById("console.log");
+      element?.append(chunk)
       if (result.done) {
         console.log('returning')
         return text;
@@ -42,7 +45,7 @@ function App() {
 
     let options = {
         method: 'POST',
-        body: `cd ~/detrain/model_parallelism/examples/tp/nn/;ls`
+        body: 'cd ~/detrain/model_parallelism/examples/tp/nn/; torchrun --nnodes=1 --nproc_per_node=2 --rdzv_id=101 --rdzv-backend=c10d --rdzv_endpoint="localhost:9999" main.py --epochs=1 --batch_size=50 --lr=0.001'
     }
 
     fetch(url, options)
@@ -61,6 +64,8 @@ function App() {
           {/* count is {messages} */}
           Fetch
         </button>
+        <br/>
+        <textarea style={{backgroundColor: "#333", color: "white"}} id="console.log" />
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
