@@ -5,6 +5,7 @@ from command import single_execute, manage_command
 import time
 from itertools import chain
 import uvicorn
+import daemon
 
 app = FastAPI()
 
@@ -31,4 +32,5 @@ async def do_command(request: Request):
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=5000, log_level="info")
+    with daemon.DaemonContext():
+        uvicorn.run("main:app", host="0.0.0.0", port=5000, log_level="info")
