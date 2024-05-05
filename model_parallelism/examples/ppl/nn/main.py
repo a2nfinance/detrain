@@ -4,7 +4,6 @@ import os
 import sys
 from detrain.ppl.args_util import get_args
 from detrain.ppl.worker import run_worker
-from detrain.ppl.dis_model import DistributedModel
 from detrain.ppl.dataset_util import get_torchvision_dataset
 from shards_model import NNShard1, NNShard2
 from torch.distributed.optim.optimizer import DistributedOptimizer

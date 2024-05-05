@@ -68,4 +68,4 @@ if __name__=="__main__":
     )
     tok = time.time()
     print(f"Execution time = {tok - tik}")
-    save_model(model, "NN_TP")
+    save_model(model, args.model_name)
