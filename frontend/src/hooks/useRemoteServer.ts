@@ -51,6 +51,32 @@ export const useRemoteServer = () => {
             .catch(onChunkedResponseError);
     }
 
-    return {sendCommand};
+    const downloadFile = (remoteHostIP: string, filePath: string) => {
+        let url = `http://${remoteHostIP}:5000/download/`;
+
+        let options = {
+            method: 'POST',
+            body: filePath
+        }
+
+        fetch(url, options)
+            .then((response) => response.blob())
+            .then(blob => {
+                let href = window.URL.createObjectURL(blob);
+                // window.location.assign(file);
+                const a = Object.assign(document.createElement("a"), {
+                    href,
+                    style: "display:none",
+                    download: "tp.pt",
+                });
+                document.body.appendChild(a);
+                a.click();
+                URL.revokeObjectURL(href);
+                a.remove();
+            })
+            .catch(onChunkedResponseError);
+    }
+
+    return { sendCommand, downloadFile };
 
 }
