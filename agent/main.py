@@ -36,9 +36,8 @@ async def download_file(request: Request):
     path = await request.body()
     path = path.decode("utf-8")
     splash_index = path.rindex("/")
-    folder_path = path[0, splash_index]
     file_name = path[(splash_index + 1) : len(path)]
-    result = FileResponse(path=folder_path, filename=file_name, media_type='application/octet-stream')
+    result = FileResponse(path=path, filename=file_name, media_type='application/octet-stream')
     return result
 
 if __name__ == "__main__":
