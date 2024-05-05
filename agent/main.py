@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import StreamingResponse
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from command import single_execute, manage_command
 import time
@@ -30,6 +31,14 @@ async def do_command(request: Request):
     result = manage_command(command)
     return result
 
+@app.post("/download/")
+async def download_file(request: Request):
+    path = await request.body()
+    path = path.decode("utf-8")
+    splash_index = path.rindex("/")
+    file_name = path[(splash_index + 1) : len(path)]
+    result = FileResponse(path=path, filename=file_name, media_type='application/octet-stream')
+    return result
 
 if __name__ == "__main__":
     with daemon.DaemonContext():
