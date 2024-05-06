@@ -1,9 +1,21 @@
+import { useAppDispatch } from "@/controller/hooks";
+import { actionNames, updateActionStatus } from "@/controller/process/processSlice";
+import { setFormsProps } from "@/controller/setup/setupFormsSlice";
+
 export const useRemoteServer = () => {
-    function onChunkedResponseComplete(result) {
+    const dispatch = useAppDispatch();
+    function onChunkedResponseComplete(result, rank) {
         console.log('all done!', result)
+        if (rank === 0) {
+            dispatch(updateActionStatus({actionName: actionNames.startTrainingAction, value: false}))
+            dispatch(setFormsProps({att: "downloadButtonEnable", value: true}))
+        }
+       
     }
 
     function onChunkedResponseError(err) {
+        dispatch(updateActionStatus({actionName: actionNames.startTrainingAction, value: false}))
+        dispatch(setFormsProps({att: "downloadButtonEnable", value: false}))
         console.error(err)
     }
 
@@ -26,10 +38,12 @@ export const useRemoteServer = () => {
 
             let element = document.getElementById(outputElementId);
             element?.append(chunk)
-
+           
             if (result.done) {
+                
                 console.log('returning')
                 return text;
+                
             } else {
                 console.log('recursing')
                 return readChunk();
@@ -37,17 +51,18 @@ export const useRemoteServer = () => {
         }
     }
 
-    const sendCommand = (remoteHostIP: string, command: string, outputElementId: string) => {
+    const sendCommand = (remoteHostIP: string, command: string, outputElementId: string, rank: number) => { 
         let url = `http://${remoteHostIP}:5000/execute/`;
 
         let options = {
             method: 'POST',
-            body: command
+            body: command,
+            keepalive: true,
         }
 
         fetch(url, options)
             .then((response) => processChunkedResponse(response, outputElementId))
-            .then(onChunkedResponseComplete)
+            .then((result) => onChunkedResponseComplete(result, rank))
             .catch(onChunkedResponseError);
     }
 

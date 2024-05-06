@@ -2,8 +2,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type SetupFormState = {
     currentStep: number,
+    downloadButtonEnable: boolean,
     parallelForm: {
         type: string,
+        modelName: string,
         nnodes: number,
         nprocPerNode: number,
         batchSize: number,
@@ -30,6 +32,7 @@ export type SetupFormState = {
         username?: string,
         password?: string,
         toFolder: string,
+        isClone: boolean,
         filePath: string
     },
 }
@@ -37,8 +40,10 @@ export type SetupFormState = {
 
 const initialState: SetupFormState = {
     currentStep: 0,
+    downloadButtonEnable: false,
     parallelForm: {
         type: "pipeline",
+        modelName: "model_01",
         nnodes: 2,
         nprocPerNode: 1,
         batchSize: 120,
@@ -62,6 +67,7 @@ const initialState: SetupFormState = {
     trainingScriptForm: {
         repo: "",
         isPrivate: false,
+        isClone: true,
         username: "",
         password: "",
         toFolder: "",

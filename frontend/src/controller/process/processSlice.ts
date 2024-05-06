@@ -13,7 +13,7 @@ type Processes = {
 }
 
 const initialState: Processes = {
-    startTrainingAction: true,
+    startTrainingAction: false,
 }
 
 export const processesSlice = createSlice({
