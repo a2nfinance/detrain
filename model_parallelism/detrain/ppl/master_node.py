@@ -1,6 +1,6 @@
 from detrain.ppl.train import train_loop
 from detrain.ppl.evaluation import test_loop
-from args_util import get_args
+from detrain.ppl.args_util import get_args
 from detrain.tp.model_utils import save_model
 
 def run_master(model, train_dataloader, test_dataloader, loss_fn, optimizer, epochs, batch_size):
