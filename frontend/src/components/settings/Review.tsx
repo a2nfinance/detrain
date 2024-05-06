@@ -1,21 +1,98 @@
 import { useAppDispatch, useAppSelector } from "@/controller/hooks";
 import { setFormsProps } from "@/controller/setup/setupFormsSlice"
+import { useRemoteServer } from "@/hooks/useRemoteServer";
 import { headStyle } from "@/theme/layout"
-import { Button, Card, Descriptions, Space } from "antd"
+import { cloneGitCommand, getPipelineParallelismCommand, getTensorParallelismCommand, pullGitCommand } from "@/utils/command-template";
+import { Button, Card, Col, Descriptions, Divider, Row, Space } from "antd"
 import { useCallback } from "react";
+import { TrainingLogs } from "../logs/TrainingLogs";
+import { actionNames, updateActionStatus } from "@/controller/process/processSlice";
+
 
 export const Review = () => {
+    const { sendCommand, downloadFile } = useRemoteServer();
     const dispatch = useAppDispatch();
-    const { parallelForm, nodesForm, trainingScriptForm } = useAppSelector(state => state.setupForms)
+    const {startTrainingAction} = useAppSelector(state => state.process);
+    const { parallelForm, nodesForm, trainingScriptForm, downloadButtonEnable } = useAppSelector(state => state.setupForms)
     const handleTrainingProcess = useCallback(() => {
         // Start node rank 0
         // Start node rank N
         // Update log rank 0
+        let command = ""
+        if (trainingScriptForm.isClone) {
+            command = cloneGitCommand(
+                trainingScriptForm.repo,
+                trainingScriptForm.toFolder,
+                trainingScriptForm.isPrivate,
+                trainingScriptForm.username,
+                trainingScriptForm.password
+            )
+        } else {
+            command = pullGitCommand(
+                trainingScriptForm.repo,
+                trainingScriptForm.toFolder,
+                trainingScriptForm.isPrivate,
+                trainingScriptForm.username,
+                trainingScriptForm.password
+            )
+        }
+
+
+        nodesForm.nodes.map((node, index) => {
+            if (parallelForm.type === "pipeline") {
+                // let trainCommand = getPipelineParallelismCommand(
+
+                // )
+                // command = command + trainCommand
+            } else {
+                if (nodesForm.rendezvousBackend?.id) {
+                    let trainCommand = getTensorParallelismCommand(
+                        trainingScriptForm.filePath,
+                        parallelForm.nnodes,
+                        parallelForm.nprocPerNode,
+                        nodesForm.rendezvousBackend?.id,
+                        nodesForm.rendezvousBackend?.backend,
+                        nodesForm.rendezvousBackend?.hostIP + ":" + nodesForm.rendezvousBackend?.port,
+                        parallelForm.epochs,
+                        parallelForm.batchSize,
+                        parallelForm.learningRate,
+                        node.gpu,
+                        parallelForm.modelName
+                    )
+                    command = command + trainCommand
+                    console.log(trainCommand)
+                    dispatch(updateActionStatus({actionName: actionNames.startTrainingAction, value: true}))
+                    sendCommand(node.ip, trainCommand, `node.${index}.log`, index)
+                }
+
+            }
+
+
+        });
+
+
+
+
+
+    }, [])
+
+    const downloadModel = useCallback(() => {
+        let path = trainingScriptForm.filePath.slice(0, trainingScriptForm.filePath.lastIndexOf("/") + 1);
+        let modelPath = path + `${parallelForm.modelName}.pt`;
+        console.log(modelPath)
+        let nodeIP = nodesForm.masterNode?.address;
+        if (parallelForm.type !== "pipeline") {
+            nodeIP = nodesForm.nodes[0].ip
+        }
+        if (nodeIP) {
+            downloadFile(nodeIP, modelPath)
+        }
+       
     }, [])
     return (
         <Card title="Review & Start training process" headStyle={headStyle} extra={
             <Space>
-                <Button type="primary" size='large' onClick={() => dispatch(setFormsProps({ att: "currentStep", value: 1 }))}>Back</Button>
+                <Button type="primary" size='large' onClick={() => dispatch(setFormsProps({ att: "currentStep", value: 2 }))}>Back</Button>
 
             </Space>
         }>
@@ -56,27 +133,52 @@ export const Review = () => {
                         }
                     </Descriptions.Item> : <Descriptions.Item label="Rendezvous backend">
                         <Space direction="vertical">
-                            
-                                <p>ID: {nodesForm.rendezvousBackend?.id} | Backend: {nodesForm.rendezvousBackend?.backend}</p>
-                                <p>Host: {nodesForm.rendezvousBackend?.hostIP}:{nodesForm.rendezvousBackend?.port}</p>
-                            
+
+                            <p>ID: {nodesForm.rendezvousBackend?.id} | Backend: {nodesForm.rendezvousBackend?.backend}</p>
+                            <p>Host: {nodesForm.rendezvousBackend?.hostIP}:{nodesForm.rendezvousBackend?.port}</p>
+
                         </Space>
                     </Descriptions.Item>
                 }
             </Descriptions>
             <Descriptions title="Training Script" column={3} layout="vertical">
-                <Descriptions.Item label="Repo">
-                    {trainingScriptForm.repo}
+
+                <Descriptions.Item label="Is private repo">
+                    {trainingScriptForm.isPrivate ? "yes" : "no"}
+                </Descriptions.Item>
+
+                <Descriptions.Item label="Clone or Pull request">
+                    {trainingScriptForm.isClone ? "Clone" : "Pull"}
                 </Descriptions.Item>
                 <Descriptions.Item label="Destination">
                     {trainingScriptForm.toFolder}
                 </Descriptions.Item>
+
+            </Descriptions>
+            <Descriptions column={1} layout="vertical">
+                <Descriptions.Item label="Repo">
+                    {trainingScriptForm.repo}
+                </Descriptions.Item>
+
                 <Descriptions.Item label="Training file path">
                     {trainingScriptForm.filePath}
                 </Descriptions.Item>
             </Descriptions>
-            
-            <Button onClick={() => handleTrainingProcess()} block type="primary" size="large">Start training process</Button>
+            <Divider />
+            <TrainingLogs nodes={nodesForm.nodes} />
+            <Divider />
+            <Row gutter={12}>
+                <Col span={12}>
+                    <Button loading={startTrainingAction} onClick={() => handleTrainingProcess()} block type="primary" size="large">Start training process</Button>
+                </Col>
+                <Col span={12}>
+                    <Button onClick={() => downloadModel()} block type="primary" size="large" disabled={!downloadButtonEnable}>Download Model</Button>
+                </Col>
+
+
+            </Row>
+
+
         </Card>
     )
 }

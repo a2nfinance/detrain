@@ -15,15 +15,15 @@ export const SetupSteps = () => {
                         description: "Include Pipeline parallelism, Tensor Parallelism"
                     },
                     {
-                        title: 'Add Nodes',
+                        title: 'Nodes Settings',
                         description: "Add nodes for the training process"
                     },
                     {
-                        title: 'Config training script',
+                        title: 'Training Script',
                         description: "A proposal needs reviews and voting at all steps."
                     },
                     {
-                        title: 'Review & Start training',
+                        title: 'Review & Start training process',
 
                     },
                 ]}

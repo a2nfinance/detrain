@@ -23,19 +23,28 @@ export const ParallelTypes = () => {
                 <Button type="primary" htmlType='submit' size='large'>Next</Button>
             }>
 
+                <Row gutter={12}>
+                    <Col span={12}>
+                        <Form.Item name="type" label="Type" rules={[{ required: true, message: 'Missing parallel type' }]}>
+                            <Select
+                                options={[
+                                    { label: "Pipline Parallelism", value: "pipeline" },
+                                    { label: "Tensor Parallelism", value: "tensor" }
+                                ]}
+                                size="large" />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item name="modelName" label="Model Name" rules={[{ required: true, message: 'Missing model name' }]}>
+                            <Input  addonBefore={<MdOutlineMail />} size='large' />
+                        </Form.Item>
+                    </Col>
+                </Row>
 
-                <Form.Item name="type" label="Type" rules={[{ required: true, message: 'Missing parallel type' }]}>
-                    <Select
-                        options={[
-                            { label: "Pipline Parallelism", value: "pipeline" },
-                            { label: "Tensor Parallelism", value: "tensor" }
-                        ]}
-                        size="large" />
-                </Form.Item>
 
                 <Row gutter={12}>
                     <Col span={12}>
-                        <Form.Item name="nnodes" label="Number of Nodes" rules={[{ required: true, message: 'Incorrect contact email'}]}>
+                        <Form.Item name="nnodes" label="Number of Nodes" rules={[{ required: true, message: 'Incorrect contact email' }]}>
                             <Input type="number" addonBefore={<MdOutlineMail />} size='large' />
                         </Form.Item>
                     </Col>
@@ -53,7 +62,7 @@ export const ParallelTypes = () => {
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                    <Form.Item name="epochs" label="Epochs" rules={[{ required: true, message: 'Incorrect website URL' }]}>
+                        <Form.Item name="epochs" label="Epochs" rules={[{ required: true, message: 'Incorrect website URL' }]}>
                             <Input type="number" addonBefore={<CgWebsite />} size='large' />
                         </Form.Item>
                     </Col>

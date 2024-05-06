@@ -43,17 +43,22 @@ export const GitConfig = () => {
                 </Row>
                 <Row gutter={12}>
                     <Col span={12}>
-                        <Form.Item name="toFolder" label="Git repository will be cloned to" rules={[{ required: true, message: 'Incorrect contact email' }]}>
+                        <Form.Item name="toFolder" label="Destination" rules={[{ required: true, message: 'Incorrect contact email' }]}>
                             <Input addonBefore={<MdOutlineMail />} size='large' />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item name="filePath" label="Training script path" rules={[{ required: true, message: 'Missing description' }]}>
-                            <Input size='large' />
+                    <Form.Item name="isClone" label="Clone or Pull request" rules={[{ required: true, message: 'Incorrect contact email' }]}>
+                            <Select options={[
+                                { label: "Clone", value: true },
+                                { label: "Pull", value: false }
+                            ]} size="large" />
                         </Form.Item>
                     </Col>
                 </Row>
-
+                <Form.Item name="filePath" label="Training script path" rules={[{ required: true, message: 'Missing description' }]}>
+                            <Input size='large' />
+                        </Form.Item>
                 <Card title="Git credential">
                     <Row gutter={12}>
                         <Col span={12}>
