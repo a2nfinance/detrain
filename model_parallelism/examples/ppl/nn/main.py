@@ -15,7 +15,6 @@ import torch.optim as optim
 # main.py --use_syn
 if __name__=="__main__":
     args = get_args()
-    print(args)
     # Get args
     world_size = int(os.environ["WORLD_SIZE"])
     rank = int(os.environ["RANK"])
