@@ -40,5 +40,5 @@ async def download_file(request: Request):
 if __name__ == "__main__":
     print("Starting DeTrain agent")
     subprocess.Popen("fuser -k 5000/tcp", stdout=subprocess.PIPE, shell=True)
-    subprocess.Popen("killall gunicorn; gunicorn -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:5000 main:app --daemon", stdout=subprocess.PIPE, shell=True)
+    subprocess.Popen("killall gunicorn; gunicorn -w 1 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:5000 main:app --daemon", stdout=subprocess.PIPE, shell=True)
     print("Agent is started")
