@@ -31,7 +31,6 @@ def run_worker(rank, world_size, model_params, train_dataloader, test_dataloader
             model.parameter_rrefs(),
             lr=lr,
         )
-        print("Model:", model)
         run_master(model, train_dataloader, test_dataloader, loss_fn, optimizer, epochs, batch_size)
     else:
         print(f"--- Init worker {rank} RPC")
@@ -41,7 +40,7 @@ def run_worker(rank, world_size, model_params, train_dataloader, test_dataloader
             world_size=world_size,
             rpc_backend_options=options
         )
-        print(f"--- Done Init worker {rank} RPC")
+        print(f"--- Start to listen & receive the forwarded data from the master node")
         pass
 
     # block until all rpcs finish
