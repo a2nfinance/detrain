@@ -3,10 +3,7 @@ from fastapi.responses import StreamingResponse
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from command import single_execute, manage_command
-import time
-from itertools import chain
-import uvicorn
-import daemon
+import subprocess
 
 app = FastAPI()
 
@@ -41,5 +38,7 @@ async def download_file(request: Request):
     return result
 
 if __name__ == "__main__":
-    with daemon.DaemonContext():
-        uvicorn.run("main:app", host="0.0.0.0", port=5000, log_level="info")
+    print("Starting DeTrain agent")
+    subprocess.Popen("fuser -k 5000/tcp", stdout=subprocess.PIPE, shell=True)
+    subprocess.Popen("killall gunicorn; gunicorn -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:5000 main:app --daemon", stdout=subprocess.PIPE, shell=True)
+    print("Agent is started")
