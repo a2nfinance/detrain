@@ -1,7 +1,6 @@
 import torch.nn as nn
 import time
 import os
-import sys
 from detrain.ppl.args_util import get_args
 from detrain.ppl.worker import run_worker
 from detrain.ppl.dataset_util import get_torchvision_dataset
