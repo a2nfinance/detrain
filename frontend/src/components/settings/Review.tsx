@@ -7,17 +7,18 @@ import { Button, Card, Col, Descriptions, Divider, Row, Space } from "antd"
 import { useCallback } from "react";
 import { TrainingLogs } from "../logs/TrainingLogs";
 import { actionNames, updateActionStatus } from "@/controller/process/processSlice";
+import { useDB } from "@/hooks/useDB";
 
 
 export const Review = () => {
     const { sendCommand, downloadFile } = useRemoteServer();
+    const { savePipeline } = useDB();
     const dispatch = useAppDispatch();
     const { startTrainingAction } = useAppSelector(state => state.process);
     const { parallelForm, nodesForm, trainingScriptForm, downloadButtonEnable } = useAppSelector(state => state.setupForms)
     const handleTrainingProcess = useCallback(() => {
-        // Start node rank 0
-        // Start node rank N
-        // Update log rank 0
+        savePipeline()
+        return;
         let command = ""
         if (trainingScriptForm.isClone) {
             command = cloneGitCommand(
@@ -59,7 +60,7 @@ export const Review = () => {
                     dispatch(updateActionStatus({ actionName: actionNames.startTrainingAction, value: true }))
                     sendCommand(node.ip, newCommand, `node.${index}.log`, index);
                 }
-                
+
             } else {
                 if (nodesForm.rendezvousBackend?.id) {
                     let trainCommand = getTensorParallelismCommand(
@@ -85,8 +86,6 @@ export const Review = () => {
 
 
         });
-
-
 
 
 

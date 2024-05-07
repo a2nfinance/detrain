@@ -14,7 +14,6 @@ export const useAkash = () => {
         const response = await client.Deployments(request);
         // @ts-ignore
         const data: {deployments: any[], pagination: {nextKey: string, total: string}} = QueryDeploymentsResponse.toJSON(response);
-        console.log(data)
         store.dispatch(setFormsProps({ att: "deployments", value: data.deployments }))
     }
 

@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type SetupFormState = {
+    id?: string,
     currentStep: number,
     downloadButtonEnable: boolean,
     deployments?: any[],
@@ -40,7 +41,7 @@ export type SetupFormState = {
 }
 
 
-const initialState: SetupFormState = {
+export const initialState: SetupFormState = {
     currentStep: 0,
     downloadButtonEnable: false,
     deployments: [],
@@ -86,8 +87,15 @@ export const setupFormsSlice = createSlice({
     reducers: {
         setFormsProps: (state: SetupFormState, action: PayloadAction<{ att: string, value: any }>) => {
             state[action.payload.att] = action.payload.value
+            console.log("Native State:", state)
+        },
+        setFormsState: (state: SetupFormState, action: PayloadAction<SetupFormState>) => {
+            Object.keys(action.payload).forEach(key => {
+                state[key] = action.payload[key]
+            }) 
+        
         }
     }
 })
-export const { setFormsProps } = setupFormsSlice.actions;
+export const { setFormsProps, setFormsState } = setupFormsSlice.actions;
 export default setupFormsSlice.reducer;

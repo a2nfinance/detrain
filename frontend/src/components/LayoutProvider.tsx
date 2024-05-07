@@ -40,28 +40,22 @@ export const LayoutProvider = (props: Props) => {
                     defaultSelectedKeys={['1']}
                     items={[
                         {
-                            key: '1',
-                            icon: <HomeOutlined />,
-                            label: "Home",
-                            onClick: () => router.push("/")
-                        },
-                        {
                             key: '2',
                             icon: <AppstoreOutlined />,
-                            label: "All Trained Processes",
-                            onClick: () => router.push("/dao/list")
+                            label: "My pipelines",
+                            onClick: () => router.push("/pipeline/list")
                         },
                         {
                             key: '3',
                             icon: <SlOrganization />,
-                            label: "Setup new training",
-                            onClick: () => router.push("/training/setup")
+                            label: "New pipeline",
+                            onClick: () => router.push("/pipeline/setup")
                         },
                         { type: "divider" },
                         {
                             key: "4",
                             type: "group",
-                            label: !collapsed ? 'Console.DeTrain v1.0.0' : "",
+                            label: !collapsed ? 'Detrain Console v1.0.0' : "",
                             children: [
                                 {
                                     key: '4.1',
