@@ -36,7 +36,7 @@ export const ParallelTypes = () => {
                     </Col>
                     <Col span={12}>
                         <Form.Item name="modelName" label="Model Name" rules={[{ required: true, message: 'Missing model name' }]}>
-                            <Input  addonBefore={<MdOutlineMail />} size='large' />
+                            <Input addonBefore={<MdOutlineMail />} size='large' />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -67,9 +67,24 @@ export const ParallelTypes = () => {
                         </Form.Item>
                     </Col>
                 </Row>
-                <Form.Item name="learningRate" label="Learning Rate" rules={[{ required: true, message: 'Missing description' }]}>
-                    <Input type="number" size='large' />
-                </Form.Item>
+                <Row gutter={12}>
+                    <Col span={12}>
+                        <Form.Item name="learningRate" label="Learning Rate" rules={[{ required: true, message: 'Missing description' }]}>
+                            <Input type="number" size='large' />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                    <Form.Item name="akashOnly" label="Only Akash servers " rules={[{ required: true, message: 'Missing parallel type' }]}>
+                            <Select
+                                options={[
+                                    { label: "Yes", value: true },
+                                    { label: "No", value: false }
+                                ]}
+                                size="large" />
+                        </Form.Item>
+                    </Col>
+                </Row>
+
 
             </Card>
             <Divider />

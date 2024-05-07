@@ -1,18 +1,30 @@
 import { useAppDispatch, useAppSelector } from "@/controller/hooks";
 import { setFormsProps } from "@/controller/setup/setupFormsSlice";
+import { useAkash } from "@/hooks/useAkash";
 import { headStyle } from "@/theme/layout";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { useChain } from "@cosmos-kit/react-lite";
 import { Alert, Button, Card, Col, Divider, Form, Input, Row, Select, Space } from "antd";
+import { useEffect } from "react";
 import { CgWebsite } from "react-icons/cg";
 import { MdOutlineMail } from "react-icons/md";
+
 export const NodesConfig = () => {
-    const { nodesForm, parallelForm } = useAppSelector(state => state.setupForms)
+    const {address} = useChain("akash");
+    const { nodesForm, parallelForm, deployments } = useAppSelector(state => state.setupForms)
     const dispatch = useAppDispatch();
+    const {getDeployment} = useAkash()
     const [form] = Form.useForm();
     const onFinish = (values: any) => {
         dispatch(setFormsProps({ att: "nodesForm", value: values }))
         dispatch(setFormsProps({ att: "currentStep", value: 2 }))
     };
+
+    useEffect(() => {
+        if (address) {
+            getDeployment(address)
+        }
+    }, [address])
     return (
         <Form
             form={form}
@@ -35,12 +47,19 @@ export const NodesConfig = () => {
                                 <Row key={key} style={{ display: 'flex', marginBottom: 8 }} gutter={12}>
                                     <Col span={14}>
                                         <Form.Item
-                                            label={index === 0 ? "Node public IP" : ""}
+                                            label={index === 0 ? "Node address or public IP" : ""}
                                             {...restField}
                                             name={[name, 'ip']}
                                             rules={[{ required: true, message: 'Missing ip' }]}
                                         >
-                                            <Input size='large' placeholder="Node public IP" />
+                                            {parallelForm.akashOnly ? <Select notFoundContent={"No Akash deployment found"} size="large" options={
+                                                deployments?.map(d => {
+                                                    return {
+                                                        label: d.name,
+                                                        value: d.ip
+                                                    }
+                                                })
+                                            }/>: <Input size='large' placeholder="Node public IP" /> }
                                         </Form.Item>
 
                                     </Col>

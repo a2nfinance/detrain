@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export type SetupFormState = {
     currentStep: number,
     downloadButtonEnable: boolean,
+    deployments?: any[],
     parallelForm: {
         type: string,
         modelName: string,
@@ -10,7 +11,8 @@ export type SetupFormState = {
         nprocPerNode: number,
         batchSize: number,
         epochs: number,
-        learningRate: number
+        learningRate: number,
+        akashOnly: boolean
     },
     nodesForm: {
         nodes: {ip: string, gpu: boolean}[],
@@ -41,6 +43,7 @@ export type SetupFormState = {
 const initialState: SetupFormState = {
     currentStep: 0,
     downloadButtonEnable: false,
+    deployments: [],
     parallelForm: {
         type: "pipeline",
         modelName: "model_01",
@@ -48,7 +51,8 @@ const initialState: SetupFormState = {
         nprocPerNode: 1,
         batchSize: 40,
         epochs: 2,
-        learningRate: 0.001
+        learningRate: 0.001,
+        akashOnly: false
     },
     nodesForm: {
         nodes: [{ip: "", gpu: false}],

@@ -10,7 +10,7 @@ import { Button, Form, Image, Layout, Menu, Space, theme } from 'antd';
 import { useRouter } from 'next/router';
 import React, { useState } from "react";
 import { FaSuperscript } from "react-icons/fa";
-// import { WalletBar } from './common/WalletBar';
+import { ConnectWallet } from './common/ConnectWallet';
 const { Header, Sider, Content, Footer } = Layout;
 
 interface Props {
@@ -97,13 +97,9 @@ export const LayoutProvider = (props: Props) => {
                             }}
                         />
                         <Form layout="inline">
-
-                            <Form.Item >
-                                {/* <AutoSearch /> */}
-                            </Form.Item>
                             <Form.Item>
 
-                                {/* <WalletBar /> */}
+                                <ConnectWallet />
                             </Form.Item>
                         </Form>
                     </Space>
