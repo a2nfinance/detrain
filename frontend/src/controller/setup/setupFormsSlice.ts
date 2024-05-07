@@ -46,8 +46,8 @@ const initialState: SetupFormState = {
         modelName: "model_01",
         nnodes: 2,
         nprocPerNode: 1,
-        batchSize: 120,
-        epochs: 10,
+        batchSize: 40,
+        epochs: 2,
         learningRate: 0.001
     },
     nodesForm: {
