@@ -11,8 +11,8 @@ export const SetupSteps = () => {
                 current={currentStep}
                 items={[
                     {
-                        title: 'Select Parallel Type',
-                        description: "Include Pipeline parallelism, Tensor Parallelism"
+                        title: 'General',
+                        description: "Select a parallelism type and setup training parameters."
                     },
                     {
                         title: 'Nodes Settings',
@@ -20,7 +20,7 @@ export const SetupSteps = () => {
                     },
                     {
                         title: 'Training Script',
-                        description: "A proposal needs reviews and voting at all steps."
+                        description: "Add github repository and setup training script file"
                     },
                     {
                         title: 'Review & Start training process',

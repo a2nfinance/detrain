@@ -19,17 +19,17 @@ export const ParallelTypes = () => {
             initialValues={parallelForm}
             onFinish={onFinish}
             layout='vertical'>
-            <Card title="Select parallel type" headStyle={headStyle} extra={
+            <Card title="General" headStyle={headStyle} extra={
                 <Button type="primary" htmlType='submit' size='large'>Next</Button>
             }>
 
                 <Row gutter={12}>
                     <Col span={12}>
-                        <Form.Item name="type" label="Type" rules={[{ required: true, message: 'Missing parallel type' }]}>
+                        <Form.Item name="type" label="Parallelism type" rules={[{ required: true, message: 'Missing parallel type' }]}>
                             <Select
                                 options={[
-                                    { label: "Pipline Parallelism", value: "pipeline" },
-                                    { label: "Tensor Parallelism", value: "tensor" }
+                                    { label: "Pipline", value: "pipeline" },
+                                    { label: "Tensor", value: "tensor" }
                                 ]}
                                 size="large" />
                         </Form.Item>

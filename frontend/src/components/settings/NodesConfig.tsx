@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from "@/controller/hooks";
 import { setFormsProps } from "@/controller/setup/setupFormsSlice";
 import { headStyle } from "@/theme/layout";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Divider, Form, Input, Row, Select, Space } from "antd";
+import { Alert, Button, Card, Col, Divider, Form, Input, Row, Select, Space } from "antd";
 import { CgWebsite } from "react-icons/cg";
 import { MdOutlineMail } from "react-icons/md";
 export const NodesConfig = () => {
@@ -35,12 +35,12 @@ export const NodesConfig = () => {
                                 <Row key={key} style={{ display: 'flex', marginBottom: 8 }} gutter={12}>
                                     <Col span={14}>
                                         <Form.Item
-                                            label={index === 0 ? "Node IP" : ""}
+                                            label={index === 0 ? "Node public IP" : ""}
                                             {...restField}
                                             name={[name, 'ip']}
                                             rules={[{ required: true, message: 'Missing ip' }]}
                                         >
-                                            <Input size='large' placeholder="Node IP" />
+                                            <Input size='large' placeholder="Node public IP" />
                                         </Form.Item>
 
                                     </Col>
@@ -76,9 +76,11 @@ export const NodesConfig = () => {
                 </Form.List>
 
                 {parallelForm.type === "pipeline" ? <Card title="Master Node">
+                    <Alert message="The master node must be one of the distributed nodes. The master node address can be a domain, localhost, or IP. If you use an internal IP for the master node address, ensure all nodes are in a local group. The master node port must be an opened port." showIcon type="info" />
+                    <br/>
                     <Row gutter={12}>
                         <Col span={12}>
-                            <Form.Item name={["masterNode", "address"]} label="Node address" rules={[{ required: true, message: 'Incorrect contact email' }]}>
+                            <Form.Item name={["masterNode", "address"]} label="Address" rules={[{ required: true, message: 'Incorrect contact email' }]}>
                                 <Input type="string" addonBefore={<MdOutlineMail />} size='large' />
                             </Form.Item>
                         </Col>

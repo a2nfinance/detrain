@@ -12,7 +12,7 @@ import { actionNames, updateActionStatus } from "@/controller/process/processSli
 export const Review = () => {
     const { sendCommand, downloadFile } = useRemoteServer();
     const dispatch = useAppDispatch();
-    const {startTrainingAction} = useAppSelector(state => state.process);
+    const { startTrainingAction } = useAppSelector(state => state.process);
     const { parallelForm, nodesForm, trainingScriptForm, downloadButtonEnable } = useAppSelector(state => state.setupForms)
     const handleTrainingProcess = useCallback(() => {
         // Start node rank 0
@@ -40,10 +40,26 @@ export const Review = () => {
 
         nodesForm.nodes.map((node, index) => {
             if (parallelForm.type === "pipeline") {
-                // let trainCommand = getPipelineParallelismCommand(
-
-                // )
-                // command = command + trainCommand
+                if (nodesForm.masterNode?.address) {
+                    let trainCommand = getPipelineParallelismCommand(
+                        trainingScriptForm.filePath,
+                        parallelForm.nnodes,
+                        parallelForm.nprocPerNode,
+                        nodesForm.masterNode?.address,
+                        nodesForm.masterNode?.port,
+                        parallelForm.epochs,
+                        parallelForm.batchSize,
+                        parallelForm.learningRate,
+                        node.gpu,
+                        parallelForm.modelName,
+                        index
+                    )
+                    let newCommand = command + trainCommand;
+                    console.log(newCommand);
+                    dispatch(updateActionStatus({ actionName: actionNames.startTrainingAction, value: true }))
+                    sendCommand(node.ip, newCommand, `node.${index}.log`, index);
+                }
+                
             } else {
                 if (nodesForm.rendezvousBackend?.id) {
                     let trainCommand = getTensorParallelismCommand(
@@ -59,10 +75,10 @@ export const Review = () => {
                         node.gpu,
                         parallelForm.modelName
                     )
-                    command = command + trainCommand
-                    console.log(trainCommand)
-                    dispatch(updateActionStatus({actionName: actionNames.startTrainingAction, value: true}))
-                    sendCommand(node.ip, trainCommand, `node.${index}.log`, index)
+                    let newCommand = command + trainCommand
+                    console.log(newCommand)
+                    // dispatch(updateActionStatus({ actionName: actionNames.startTrainingAction, value: true }))
+                    // sendCommand(node.ip, newCommand, `node.${index}.log`, index)
                 }
 
             }
@@ -87,7 +103,7 @@ export const Review = () => {
         if (nodeIP) {
             downloadFile(nodeIP, modelPath)
         }
-       
+
     }, [])
     return (
         <Card title="Review & Start training process" headStyle={headStyle} extra={
