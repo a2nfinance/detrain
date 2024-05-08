@@ -43,7 +43,7 @@ export const LayoutProvider = (props: Props) => {
                             key: '2',
                             icon: <AppstoreOutlined />,
                             label: "My pipelines",
-                            onClick: () => router.push("/pipeline/list")
+                            onClick: () => router.push("/")
                         },
                         {
                             key: '3',

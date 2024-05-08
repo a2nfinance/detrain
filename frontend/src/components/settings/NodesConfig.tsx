@@ -40,7 +40,9 @@ export const NodesConfig = () => {
                 </Space>
             }>
 
-
+                {
+                    parallelForm.type === "pipeline" && <><Alert showIcon type="info" message="A node should serve as the master node equipped with a CPU for tensor offloading." /><br/></>
+                }
                 <Form.List name="nodes">
                     {(fields, { add, remove }) => (
                         <>
@@ -100,12 +102,12 @@ export const NodesConfig = () => {
                     <br/>
                     <Row gutter={12}>
                         <Col span={12}>
-                            <Form.Item name={["masterNode", "address"]} label="Address" rules={[{ required: true, message: 'Incorrect contact email' }]}>
+                            <Form.Item name={["masterNode", "address"]} label="Address" rules={[{ required: true, message: 'Missing address' }]}>
                                 <Input type="string" addonBefore={<MdOutlineMail />} size='large' />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item name={["masterNode", "port"]} label="Port" rules={[{ required: true, message: 'Incorrect contact email' }]}>
+                            <Form.Item name={["masterNode", "port"]} label="Port" rules={[{ required: true, message: 'Missing port' }]}>
                                 <Input type="number" addonBefore={<MdOutlineMail />} size='large' />
                             </Form.Item>
                         </Col>

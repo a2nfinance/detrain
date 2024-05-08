@@ -1,15 +1,7 @@
-import { Divider, Typography } from "antd";
-import Head from "next/head";
-const {Title} = Typography;
+import { MyPipelineList } from "@/components/pipline/MyPipelineList";
+
 export default function Index() {
     return (
-        <>  
-            <Head>
-                <title>Homepage</title>
-            </Head>
-            <Title level={3}>{"RECENT DAOs".toUpperCase()}</Title >
-            <Divider />
-            
-        </>
+        <MyPipelineList />
     )
 }
