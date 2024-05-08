@@ -18,7 +18,6 @@ export const Review = () => {
     const { parallelForm, nodesForm, trainingScriptForm, downloadButtonEnable } = useAppSelector(state => state.setupForms)
     const handleTrainingProcess = useCallback(() => {
         savePipeline()
-        return;
         let command = ""
         if (trainingScriptForm.isClone) {
             command = cloneGitCommand(
@@ -78,8 +77,8 @@ export const Review = () => {
                     )
                     let newCommand = command + trainCommand
                     console.log(newCommand)
-                    // dispatch(updateActionStatus({ actionName: actionNames.startTrainingAction, value: true }))
-                    // sendCommand(node.ip, newCommand, `node.${index}.log`, index)
+                    dispatch(updateActionStatus({ actionName: actionNames.startTrainingAction, value: true }))
+                    sendCommand(node.ip, newCommand, `node.${index}.log`, index)
                 }
 
             }

@@ -87,7 +87,19 @@ export const setupFormsSlice = createSlice({
     reducers: {
         setFormsProps: (state: SetupFormState, action: PayloadAction<{ att: string, value: any }>) => {
             state[action.payload.att] = action.payload.value
-            console.log("Native State:", state)
+            if (action.payload.att === "parallelForm") {
+                let nodes: {ip: string, gpu: boolean}[] = state.nodesForm.nodes;
+                let len = nodes.length
+                if (state.parallelForm.nnodes < len) {
+                    nodes = nodes.slice(0, state.parallelForm.nnodes)
+                } else {
+                    for(let i = 0; i < state.parallelForm.nnodes - len; i++) {
+                        nodes.push({ip: "", gpu: false})
+                    }
+                }
+                
+                state.nodesForm.nodes = nodes
+            }
         },
         setFormsState: (state: SetupFormState, action: PayloadAction<SetupFormState>) => {
             Object.keys(action.payload).forEach(key => {

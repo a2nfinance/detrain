@@ -16,6 +16,7 @@ export const NodesConfig = () => {
     const {getDeployment} = useAkash()
     const [form] = Form.useForm();
     const onFinish = (values: any) => {
+        // Validate master node
         dispatch(setFormsProps({ att: "nodesForm", value: values }))
         dispatch(setFormsProps({ att: "currentStep", value: 2 }))
     };
@@ -45,7 +46,7 @@ export const NodesConfig = () => {
                         <>
                             {fields.map(({ key, name, ...restField }, index) => (
                                 <Row key={key} style={{ display: 'flex', marginBottom: 8 }} gutter={12}>
-                                    <Col span={14}>
+                                    <Col span={18}>
                                         <Form.Item
                                             label={index === 0 ? "Node address or public IP" : ""}
                                             {...restField}
@@ -78,18 +79,18 @@ export const NodesConfig = () => {
                                             </Select>
                                         </Form.Item>
                                     </Col>
-                                    <Col span={4}>
+                                    {/* <Col span={4}>
                                         <MinusCircleOutlined onClick={() => remove(name)} />
-                                    </Col>
+                                    </Col> */}
 
                                 </Row>
                             ))}
 
-                            <Form.Item>
+                            {/* <Form.Item>
                                 <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
                                     Add node
                                 </Button>
-                            </Form.Item>
+                            </Form.Item> */}
                         </>
                     )}
                 </Form.List>
