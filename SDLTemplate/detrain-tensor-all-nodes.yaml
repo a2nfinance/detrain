@@ -10,8 +10,6 @@ services:
           - global: true
       - port: 5000
         as: 5000
-        accept:
-          - 0.0.0.0/0
         to:
           - global: true
       - port: 9999
