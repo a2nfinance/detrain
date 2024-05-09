@@ -135,7 +135,7 @@ export const Review = () => {
                     <Space direction="vertical">
                         {nodesForm.nodes.map(node => {
                             return (
-                                <p>{node.ip} | {node.gpu ? "GPU" : "CPU"}</p>
+                                <p key={`${node.ip}`}>{node.ip} | {node.gpu ? "GPU" : "CPU"}</p>
                             )
                         })}
                     </Space>

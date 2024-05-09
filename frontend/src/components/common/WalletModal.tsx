@@ -1,5 +1,5 @@
 import { WalletModalProps, WalletStatus } from "@cosmos-kit/core";
-import { Alert, Avatar, Button, Col, Flex, Modal, Row, Space } from "antd";
+import { Avatar, Col, Flex, Modal, Row, Space } from "antd";
 
 export const WalletModel = ({
     isOpen,
