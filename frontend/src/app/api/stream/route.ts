@@ -44,7 +44,7 @@ async function* doExecute(body): AsyncGenerator<Item, void, unknown> {
             try {
                 let log = decoder.decode(value)
                 console.log("Log", log)
-                yield {value: log}
+                yield {value: log.toString()}
             }
             catch( e:any ) {
                 console.warn( e.message )

@@ -41,6 +41,7 @@ export const useRemoteServer = () => {
         let element = document.getElementById(outputElementId);
         for await (let value of it) {
             try {
+                console.log(value);
                 const chunk = JSON.parse(value);
                 element?.append(chunk.value)
             } catch (e: any) {
