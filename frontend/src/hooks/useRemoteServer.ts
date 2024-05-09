@@ -1,6 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/controller/hooks";
 import { actionNames, updateActionStatus } from "@/controller/process/processSlice";
-import { setFormsProps } from "@/controller/setup/setupFormsSlice";
 export async function* streamingFetch(input: RequestInfo | URL, init?: RequestInit) {
 
     const response = await fetch(input, init)
@@ -25,6 +24,7 @@ export async function* streamingFetch(input: RequestInfo | URL, init?: RequestIn
 export const useRemoteServer = () => {
     const dispatch = useAppDispatch();
     const {parallelForm} = useAppSelector(state => state.setupForms)
+
     const sendCommand = async (remoteHostIP: string, command: string, outputElementId: string, rank: number) => {
 
         let url = `/api/stream`;
@@ -42,8 +42,6 @@ export const useRemoteServer = () => {
         for await (let value of it) {
             try {
                 const chunk = JSON.parse(value);
-                console.log("Receive:", chunk)
-                console.log("Element:", element)
                 element?.append(chunk.value)
             } catch (e: any) {
                 console.warn(e.message)
@@ -83,7 +81,4 @@ export const useRemoteServer = () => {
     }
 
     return { sendCommand, downloadFile };
-
-
-
 }
