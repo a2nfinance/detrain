@@ -1,97 +1,89 @@
-import { useAppDispatch } from "@/controller/hooks";
+import { useAppDispatch, useAppSelector } from "@/controller/hooks";
 import { actionNames, updateActionStatus } from "@/controller/process/processSlice";
 import { setFormsProps } from "@/controller/setup/setupFormsSlice";
+export async function* streamingFetch(input: RequestInfo | URL, init?: RequestInit) {
 
+    const response = await fetch(input, init)
+    const reader = response.body?.getReader();
+    const decoder = new TextDecoder('utf-8');
+    if (reader) {
+        for (; ;) {
+            const { done, value } = await reader.read()
+            if (done) break;
+
+            try {
+                yield decoder.decode(value)
+            }
+            catch (e: any) {
+                console.warn(e.message)
+            }
+
+        }
+    }
+
+}
 export const useRemoteServer = () => {
     const dispatch = useAppDispatch();
-    function onChunkedResponseComplete(result, rank) {
-        console.log('all done!', result)
-        if (rank === 0) {
-            dispatch(updateActionStatus({actionName: actionNames.startTrainingAction, value: false}))
-            dispatch(setFormsProps({att: "downloadButtonEnable", value: true}))
-        }
-       
-    }
+    const {parallelForm} = useAppSelector(state => state.setupForms)
+    const sendCommand = async (remoteHostIP: string, command: string, outputElementId: string, rank: number) => {
 
-    function onChunkedResponseError(err) {
-        dispatch(updateActionStatus({actionName: actionNames.startTrainingAction, value: false}))
-        dispatch(setFormsProps({att: "downloadButtonEnable", value: false}))
-        console.error(err)
-    }
-
-    function processChunkedResponse(response, outputElementId: string) {
-        var text = '';
-        var reader = response.body.getReader()
-        var decoder = new TextDecoder();
-
-        return readChunk();
-
-        function readChunk() {
-            return reader.read().then(appendChunks);
-        }
-
-        function appendChunks(result) {
-            var chunk = decoder.decode(result.value || new Uint8Array, { stream: !result.done });
-            console.log('got chunk of', chunk.length, 'bytes')
-            text += chunk;
-            console.log('text so far is', text.length, 'bytes\n');
-
-            let element = document.getElementById(outputElementId);
-            element?.append(chunk)
-           
-            if (result.done) {
-                
-                console.log('returning')
-                return text;
-                
-            } else {
-                console.log('recursing')
-                return readChunk();
-            }
-        }
-    }
-
-    const sendCommand = (remoteHostIP: string, command: string, outputElementId: string, rank: number) => { 
-        let url = `//${remoteHostIP}:5000/execute/`;
+        let url = `/api/stream`;
 
         let options = {
             method: 'POST',
-            body: command,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ remoteHostIP: remoteHostIP, command: command }),
             keepalive: true,
         }
+        const it = streamingFetch(url, options)
 
-        fetch(url, options)
-            .then((response) => processChunkedResponse(response, outputElementId))
-            .then((result) => onChunkedResponseComplete(result, rank))
-            .catch(onChunkedResponseError);
+        for await (let value of it) {
+            try {
+                const chunk = JSON.parse(value);
+                let element = document.getElementById(outputElementId);
+                element?.append(chunk.value)
+            } catch (e: any) {
+
+                console.warn(e.message)
+            }
+        }
+        dispatch(updateActionStatus({ actionName: actionNames.startTrainingAction, value: false }))
+
     }
 
-    const downloadFile = (remoteHostIP: string, filePath: string) => {
-        let url = `http://${remoteHostIP}:5000/download/`;
+    const downloadFile = async (remoteHostIP: string, filePath: string) => {
+       
+        let url = `/api/file`;
 
         let options = {
             method: 'POST',
-            body: filePath
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ remoteHostIP: remoteHostIP, filePath: filePath }),
         }
 
-        fetch(url, options)
-            .then((response) => response.blob())
-            .then(blob => {
-                let href = window.URL.createObjectURL(blob);
-                // window.location.assign(file);
-                const a = Object.assign(document.createElement("a"), {
-                    href,
-                    style: "display:none",
-                    download: "tp.pt",
-                });
-                document.body.appendChild(a);
-                a.click();
-                URL.revokeObjectURL(href);
-                a.remove();
-            })
-            .catch(onChunkedResponseError);
+        const req = await fetch(url, options);
+
+        const blob = await req.blob();
+        console.log(blob)
+        let href = window.URL.createObjectURL(blob);
+        const a = Object.assign(document.createElement("a"), {
+            href,
+            style: "display:none",
+            download: `${parallelForm.modelName}.pt`,
+        });
+        document.body.appendChild(a);
+        a.click();
+        URL.revokeObjectURL(href);
+        a.remove();
+
     }
 
     return { sendCommand, downloadFile };
+
+
 
 }
