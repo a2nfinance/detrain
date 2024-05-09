@@ -38,14 +38,14 @@ export const useRemoteServer = () => {
             keepalive: true,
         }
         const it = streamingFetch(url, options)
-
+        let element = document.getElementById(outputElementId);
         for await (let value of it) {
             try {
                 const chunk = JSON.parse(value);
-                let element = document.getElementById(outputElementId);
+                console.log("Receive:", chunk)
+                console.log("Element:", element)
                 element?.append(chunk.value)
             } catch (e: any) {
-
                 console.warn(e.message)
             }
         }
