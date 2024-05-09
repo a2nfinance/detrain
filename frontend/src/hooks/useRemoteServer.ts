@@ -52,7 +52,7 @@ export const useRemoteServer = () => {
     }
 
     const sendCommand = (remoteHostIP: string, command: string, outputElementId: string, rank: number) => { 
-        let url = `http://${remoteHostIP}:5000/execute/`;
+        let url = `//${remoteHostIP}:5000/execute/`;
 
         let options = {
             method: 'POST',
