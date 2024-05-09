@@ -2,10 +2,6 @@ import { NextRequest } from "next/server";
 import { makeStream } from "./makestream";
 import { NextApiRequest } from "next";
 
-type Item = {
-    value: string;
-  }
-
 class StreamingResponse extends Response {
 
     constructor(res: ReadableStream<any>, init?: ResponseInit) {
@@ -23,7 +19,7 @@ class StreamingResponse extends Response {
  * async generator that simulate a data fetch from external resource and
  * return chunck of data every second
  */
-async function* doExecute(body): AsyncGenerator<Item, void, unknown> {
+async function* doExecute(body): AsyncGenerator<string, void, unknown> {
     let { remoteHostIP, command } = body;
     let url = `http://${remoteHostIP}:5000/execute/`;
 
@@ -44,7 +40,7 @@ async function* doExecute(body): AsyncGenerator<Item, void, unknown> {
             try {
                 let log = decoder.decode(value)
                 console.log("Log", log)
-                yield {value: log.toString()}
+                yield log
             }
             catch( e:any ) {
                 console.warn( e.message )
