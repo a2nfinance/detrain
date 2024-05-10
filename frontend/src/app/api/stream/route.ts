@@ -20,7 +20,6 @@ class StreamingResponse extends Response {
  * return chunck of data every second
  */
 async function* doExecute(body): AsyncGenerator<string, void, unknown> {
-    try {
         let { remoteHostIP, command, agentPort } = body;
         let url = `http://${remoteHostIP}:${agentPort}/execute/`;
 
@@ -49,10 +48,6 @@ async function* doExecute(body): AsyncGenerator<string, void, unknown> {
 
             }
         }
-    } catch (e:any) {
-        console.log(e.message)
-    }
-
 }
 
 /**
