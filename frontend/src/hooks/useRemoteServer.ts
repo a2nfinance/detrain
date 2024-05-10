@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/controller/hooks";
 import { actionNames, updateActionStatus } from "@/controller/process/processSlice";
+import { setFormsProps } from "@/controller/setup/setupFormsSlice";
 export async function* streamingFetch(input: RequestInfo | URL, init?: RequestInit) {
 
     const response = await fetch(input, init)
@@ -47,7 +48,7 @@ export const useRemoteServer = () => {
             }
         }
         dispatch(updateActionStatus({ actionName: actionNames.startTrainingAction, value: false }))
-
+        dispatch(setFormsProps({ att: "downloadButtonEnable", value: true }))
     }
 
     const downloadFile = async (remoteHostIP: string, filePath: string) => {
