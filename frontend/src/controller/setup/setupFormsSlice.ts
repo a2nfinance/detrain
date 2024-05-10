@@ -31,6 +31,7 @@ export type SetupFormState = {
     },
     trainingScriptForm: {
         repo: string,
+        agentPort: number, 
         isPrivate: boolean,
         username?: string,
         password?: string,
@@ -71,6 +72,7 @@ export const initialState: SetupFormState = {
     },
     trainingScriptForm: {
         repo: "",
+        agentPort: 80, 
         isPrivate: false,
         isClone: true,
         username: "",

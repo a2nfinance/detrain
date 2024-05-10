@@ -23,7 +23,7 @@ export async function* streamingFetch(input: RequestInfo | URL, init?: RequestIn
 }
 export const useRemoteServer = () => {
     const dispatch = useAppDispatch();
-    const {parallelForm} = useAppSelector(state => state.setupForms)
+    const {parallelForm, trainingScriptForm} = useAppSelector(state => state.setupForms)
 
     const sendCommand = async (remoteHostIP: string, command: string, outputElementId: string, rank: number) => {
 
@@ -34,7 +34,7 @@ export const useRemoteServer = () => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ remoteHostIP: remoteHostIP, command: command }),
+            body: JSON.stringify({ remoteHostIP: remoteHostIP, command: command, agentPort:  trainingScriptForm.agentPort}),
             keepalive: true,
         }
         const it = streamingFetch(url, options)
@@ -59,7 +59,7 @@ export const useRemoteServer = () => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ remoteHostIP: remoteHostIP, filePath: filePath }),
+            body: JSON.stringify({ remoteHostIP: remoteHostIP, filePath: filePath, agentPort:  trainingScriptForm.agentPort }),
         }
 
         const req = await fetch(url, options);

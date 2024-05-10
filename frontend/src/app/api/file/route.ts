@@ -3,9 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
     if (req.method === "POST") {
         const data = await req.json();
-        const { remoteHostIP, filePath } = data
+        const { remoteHostIP, filePath, agentPort } = data
         if (remoteHostIP && filePath) {
-            let url = `http://${remoteHostIP}:5000/download/`;
+            let url = `http://${remoteHostIP}:${agentPort}/download/`;
 
             let options = {
                 method: 'POST',

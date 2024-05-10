@@ -1,7 +1,9 @@
 import { Collapse, CollapseProps } from "antd";
 
 export const TrainingLogs = ({nodes}: {nodes: {ip: string, gpu: boolean}[]}) => {
+    const activeKeys: string[] = [];
     const items: CollapseProps['items'] = nodes.map((node, index) => {
+        activeKeys.push(`node-${index}`);
         return {
             key: `node-${index}`,
             label: `${node.ip} - ${index === 0 ? "Master Node/ Node Rank 0" : `Node ${index}`}`,
@@ -9,6 +11,6 @@ export const TrainingLogs = ({nodes}: {nodes: {ip: string, gpu: boolean}[]}) => 
         }
     })
     return (
-        <Collapse items={items} defaultActiveKey={['node-0']} />
+        <Collapse items={items} defaultActiveKey={activeKeys}/>
     )
 }

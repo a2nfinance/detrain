@@ -56,9 +56,19 @@ export const GitConfig = () => {
                         </Form.Item>
                     </Col>
                 </Row>
-                <Form.Item name="filePath" label="Training script path" rules={[{ required: true, message: 'Missing description' }]}>
+                <Row gutter={12}>
+                    <Col span={12}>
+                    <Form.Item name="filePath" label="Training script path" rules={[{ required: true, message: 'Missing description' }]}>
                             <Input size='large' />
                         </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                    <Form.Item name="agentPort" label="DeTrain Agent Port" rules={[{ required: true, message: 'Missing description' }]}>
+                            <Input type={"number"} size='large' />
+                        </Form.Item>
+                    </Col>
+                    </Row>
+                
                 <Card title="Git credential">
                     <Row gutter={12}>
                         <Col span={12}>
