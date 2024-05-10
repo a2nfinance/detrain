@@ -47,8 +47,11 @@ export const useRemoteServer = () => {
                 console.warn(e.message)
             }
         }
-        dispatch(updateActionStatus({ actionName: actionNames.startTrainingAction, value: false }))
-        dispatch(setFormsProps({ att: "downloadButtonEnable", value: true }))
+        if (rank === 0) {
+            dispatch(updateActionStatus({ actionName: actionNames.startTrainingAction, value: false }))
+            dispatch(setFormsProps({ att: "downloadButtonEnable", value: true }))
+        }
+        
     }
 
     const downloadFile = async (remoteHostIP: string, filePath: string, masterNodeAgentPort: number) => {
