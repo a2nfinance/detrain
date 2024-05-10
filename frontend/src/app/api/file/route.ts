@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
 
             let response = await fetch(url, options)
             let blob = await response.blob();
+            console.log(blob)
             const headers = new Headers();
             headers.set("Content-Type", "application/octet-stream");
             return new NextResponse(blob, { status: 200, statusText: "OK", headers });

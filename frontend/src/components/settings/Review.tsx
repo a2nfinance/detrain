@@ -93,15 +93,14 @@ export const Review = () => {
     const downloadModel = useCallback(() => {
         let path = trainingScriptForm.filePath.slice(0, trainingScriptForm.filePath.lastIndexOf("/") + 1);
         let modelPath = path + `${parallelForm.modelName}.pt`;
-        console.log(modelPath)
-        let nodeIP = nodesForm.masterNode?.address;
-        if (parallelForm.type !== "pipeline") {
-            nodeIP = nodesForm.nodes[0].ip
+        if (!trainingScriptForm.isClone) {
+            modelPath = `${trainingScriptForm.toFolder}/${modelPath}`;
         }
-
+        console.log(modelPath)
+        let nodeIP = nodesForm.nodes[0].ip
 
         if (nodeIP) {
-            downloadFile(nodesForm.nodes[0].ip, modelPath, 80)
+            downloadFile(nodeIP, modelPath, nodesForm.nodes[0].agentPort)
         }
 
 

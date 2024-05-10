@@ -47,10 +47,11 @@ export const NodesConfig = () => {
                     {(fields, { add, remove }) => (
                         <>
                             {fields.map(({ key, name, ...restField }, index) => (
+                                <>
                                 <Row key={key} style={{ display: 'flex', marginBottom: 8 }} gutter={12}>
                                     <Col span={16}>
                                         <Form.Item
-                                            label={index === 0 ? "Node address or public IP" : ""}
+                                            label={index === 0 ? "Master node (address or public IP)" : (index === 1 ? "Worker node" : "")}
                                             {...restField}
                                             name={[name, 'ip']}
                                             rules={[{ required: true, message: 'Missing ip' }]}
@@ -67,7 +68,7 @@ export const NodesConfig = () => {
 
                                     </Col>
                                     <Col span={4}>
-                                        <Form.Item label={index === 0 ? "Agent Port" : ""}
+                                        <Form.Item label={index === 0 ? "Agent Port" : (index === 1 ? "Agent port" : "")}
                                             {...restField}
                                             name={[name, 'agentPort']}
                                             rules={[{ required: true, message: 'Missing port' }]}>
@@ -77,7 +78,7 @@ export const NodesConfig = () => {
                                     </Col>
                                     <Col span={4}>
                                         <Form.Item
-                                            label={index === 0 ? "Use GPU" : ""}
+                                            label={index === 0 ? "Use GPU" : (index === 1 ? "Use GPU" : "")}
                                             {...restField}
                                             name={[name, 'gpu']}
                                             rules={[{ required: true, message: 'Use gpu or not' }]}
@@ -90,11 +91,11 @@ export const NodesConfig = () => {
                                             </Select>
                                         </Form.Item>
                                     </Col>
-                                    {/* <Col span={4}>
-                                        <MinusCircleOutlined onClick={() => remove(name)} />
-                                    </Col> */}
+                                    
 
                                 </Row>
+                                {index === 0 ? <Divider /> : ""}
+                                </>
                             ))}
 
                             {/* <Form.Item>
@@ -106,8 +107,8 @@ export const NodesConfig = () => {
                     )}
                 </Form.List>
 
-                {parallelForm.type === "pipeline" ? <Card title="Master Node">
-                    <Alert message="The master node must be one of the distributed nodes. The master node address can be a domain, localhost, or IP. If you use an internal IP for the master node address, ensure all nodes are in a local group. The master node port must be an opened port." showIcon type="info" />
+                {parallelForm.type === "pipeline" ? <Card title="Master node - worker node communication">
+                    <Alert message="This setting enables worker nodes to communicate with the master node. The address can be a domain, localhost, or IP. If you use an internal IP for the master node address, ensure that all nodes are in the same local group. The master node port must be an open port." showIcon type="info" />
                     <br />
                     <Row gutter={12}>
                         <Col span={12}>
