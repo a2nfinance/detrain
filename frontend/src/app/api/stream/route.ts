@@ -57,11 +57,16 @@ async function* doExecute(body): AsyncGenerator<string, void, unknown> {
  */
 
 export async function POST(req: NextRequest ) {
-    if (req.method === "POST") {
-        const data = await req.json();
-        const stream = makeStream(doExecute(data))
-        const response = new StreamingResponse(stream)
-        return response
+    try {
+        if (req.method === "POST") {
+            const data = await req.json();
+            const stream = makeStream(doExecute(data))
+            const response = new StreamingResponse(stream)
+            return response
+        }
+    } catch(e) {
+        console.log(e)
     }
+    
 
 }

@@ -10,10 +10,10 @@ import { CgWebsite } from "react-icons/cg";
 import { MdOutlineMail } from "react-icons/md";
 
 export const NodesConfig = () => {
-    const {address} = useChain("akash");
+    const { address } = useChain("akash");
     const { nodesForm, parallelForm, deployments } = useAppSelector(state => state.setupForms)
     const dispatch = useAppDispatch();
-    const {getDeployment} = useAkash()
+    const { getDeployment } = useAkash()
     const [form] = Form.useForm();
     const onFinish = (values: any) => {
         // Validate master node
@@ -41,14 +41,14 @@ export const NodesConfig = () => {
             }>
 
                 {
-                    parallelForm.type === "pipeline" && <><Alert showIcon type="info" message="A node should serve as the master node equipped with a CPU for tensor offloading." /><br/></>
+                    parallelForm.type === "pipeline" && <><Alert showIcon type="info" message="A node should serve as the master node equipped with a CPU for tensor offloading." /><br /></>
                 }
                 <Form.List name="nodes">
                     {(fields, { add, remove }) => (
                         <>
                             {fields.map(({ key, name, ...restField }, index) => (
                                 <Row key={key} style={{ display: 'flex', marginBottom: 8 }} gutter={12}>
-                                    <Col span={18}>
+                                    <Col span={16}>
                                         <Form.Item
                                             label={index === 0 ? "Node address or public IP" : ""}
                                             {...restField}
@@ -62,11 +62,20 @@ export const NodesConfig = () => {
                                                         value: d.ip
                                                     }
                                                 })
-                                            }/>: <Input size='large' placeholder="Node public IP" /> }
+                                            } /> : <Input size='large' placeholder="Node public IP" />}
                                         </Form.Item>
 
                                     </Col>
-                                    <Col span={6}>
+                                    <Col span={4}>
+                                        <Form.Item label={index === 0 ? "Agent Port" : ""}
+                                            {...restField}
+                                            name={[name, 'agentPort']}
+                                            rules={[{ required: true, message: 'Missing port' }]}>
+                                            <Input type={"number"} size='large' />
+                                        </Form.Item>
+
+                                    </Col>
+                                    <Col span={4}>
                                         <Form.Item
                                             label={index === 0 ? "Use GPU" : ""}
                                             {...restField}
@@ -99,7 +108,7 @@ export const NodesConfig = () => {
 
                 {parallelForm.type === "pipeline" ? <Card title="Master Node">
                     <Alert message="The master node must be one of the distributed nodes. The master node address can be a domain, localhost, or IP. If you use an internal IP for the master node address, ensure all nodes are in a local group. The master node port must be an opened port." showIcon type="info" />
-                    <br/>
+                    <br />
                     <Row gutter={12}>
                         <Col span={12}>
                             <Form.Item name={["masterNode", "address"]} label="Address" rules={[{ required: true, message: 'Missing address' }]}>
@@ -143,6 +152,6 @@ export const NodesConfig = () => {
                 }
             </Card>
             <Divider />
-        </Form>
+        </Form >
     )
 }

@@ -26,7 +26,7 @@ export const useRemoteServer = () => {
     const dispatch = useAppDispatch();
     const {parallelForm, trainingScriptForm} = useAppSelector(state => state.setupForms)
 
-    const sendCommand = async (remoteHostIP: string, command: string, outputElementId: string, rank: number) => {
+    const sendCommand = async (remoteHostIP: string, command: string, outputElementId: string, rank: number, agentPort: number) => {
 
         let url = `/api/stream`;
 
@@ -35,7 +35,7 @@ export const useRemoteServer = () => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ remoteHostIP: remoteHostIP, command: command, agentPort:  trainingScriptForm.agentPort}),
+            body: JSON.stringify({ remoteHostIP: remoteHostIP, command: command, agentPort:  agentPort}),
             keepalive: true,
         }
         const it = streamingFetch(url, options)
@@ -51,7 +51,7 @@ export const useRemoteServer = () => {
         dispatch(setFormsProps({ att: "downloadButtonEnable", value: true }))
     }
 
-    const downloadFile = async (remoteHostIP: string, filePath: string) => {
+    const downloadFile = async (remoteHostIP: string, filePath: string, masterNodeAgentPort: number) => {
        
         let url = `/api/file`;
 
@@ -60,7 +60,7 @@ export const useRemoteServer = () => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ remoteHostIP: remoteHostIP, filePath: filePath, agentPort:  trainingScriptForm.agentPort }),
+            body: JSON.stringify({ remoteHostIP: remoteHostIP, filePath: filePath, agentPort:  masterNodeAgentPort }),
         }
 
         const req = await fetch(url, options);

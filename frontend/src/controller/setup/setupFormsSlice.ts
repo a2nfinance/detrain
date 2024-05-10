@@ -16,7 +16,7 @@ export type SetupFormState = {
         akashOnly: boolean
     },
     nodesForm: {
-        nodes: {ip: string, gpu: boolean}[],
+        nodes: {ip: string, gpu: boolean, agentPort: number}[],
         masterNode?: {
             address: string,
             port: number
@@ -31,7 +31,6 @@ export type SetupFormState = {
     },
     trainingScriptForm: {
         repo: string,
-        agentPort: number, 
         isPrivate: boolean,
         username?: string,
         password?: string,
@@ -57,7 +56,7 @@ export const initialState: SetupFormState = {
         akashOnly: false
     },
     nodesForm: {
-        nodes: [{ip: "", gpu: false}],
+        nodes: [{ip: "", gpu: false, agentPort: 80}],
         masterNode: {
             address: "localhost",
             port: 9999
@@ -72,7 +71,6 @@ export const initialState: SetupFormState = {
     },
     trainingScriptForm: {
         repo: "",
-        agentPort: 80, 
         isPrivate: false,
         isClone: true,
         username: "",
@@ -90,13 +88,13 @@ export const setupFormsSlice = createSlice({
         setFormsProps: (state: SetupFormState, action: PayloadAction<{ att: string, value: any }>) => {
             state[action.payload.att] = action.payload.value
             if (action.payload.att === "parallelForm") {
-                let nodes: {ip: string, gpu: boolean}[] = state.nodesForm.nodes;
+                let nodes: {ip: string, gpu: boolean, agentPort: number}[] = state.nodesForm.nodes;
                 let len = nodes.length
                 if (state.parallelForm.nnodes < len) {
                     nodes = nodes.slice(0, state.parallelForm.nnodes)
                 } else {
                     for(let i = 0; i < state.parallelForm.nnodes - len; i++) {
-                        nodes.push({ip: "", gpu: false})
+                        nodes.push({ip: "", gpu: false, agentPort: 80})
                     }
                 }
                 

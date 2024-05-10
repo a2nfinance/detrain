@@ -57,7 +57,7 @@ export const Review = () => {
                     let newCommand = command + trainCommand;
                     console.log(newCommand);
                     dispatch(updateActionStatus({ actionName: actionNames.startTrainingAction, value: true }))
-                    sendCommand(node.ip, newCommand, `node.${index}.log`, index);
+                    sendCommand(node.ip, newCommand, `node.${index}.log`, index, node.agentPort);
                 }
 
             } else {
@@ -78,7 +78,7 @@ export const Review = () => {
                     let newCommand = command + trainCommand
                     console.log(newCommand)
                     dispatch(updateActionStatus({ actionName: actionNames.startTrainingAction, value: true }))
-                    sendCommand(node.ip, newCommand, `node.${index}.log`, index)
+                    sendCommand(node.ip, newCommand, `node.${index}.log`, index, node.agentPort)
                 }
 
             }
@@ -98,9 +98,13 @@ export const Review = () => {
         if (parallelForm.type !== "pipeline") {
             nodeIP = nodesForm.nodes[0].ip
         }
+
+
         if (nodeIP) {
-            downloadFile(nodeIP, modelPath)
+            downloadFile(nodesForm.nodes[0].ip, modelPath, 80)
         }
+
+
 
     }, [])
     return (
