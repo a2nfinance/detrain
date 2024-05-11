@@ -111,7 +111,7 @@ export const LayoutProvider = (props: Props) => {
                 >
                     {props.children}
                 </Content>
-                <Footer style={{ textAlign: 'center', maxHeight: 50 }}>GrantMe ©2024 Created by A2N Finance</Footer>
+                <Footer style={{ textAlign: 'center', maxHeight: 50 }}>DeTrain ©2024 Created by A2N Finance</Footer>
             </Layout>
 
         </Layout>
