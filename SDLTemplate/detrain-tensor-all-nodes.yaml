@@ -20,22 +20,11 @@ services:
         to:
           - global: true
     command:
-      - apt-get
-      - install
-      - git;pip
-      - install
-      - fastapi;pip
-      - install
-      - fastapi;pip
-      - install
-      - "\"uvicorn[standard]\""
-      - gunicorn;pip
-      - install
-      - detrain;git
-      - clone
-      - https://github.com/a2nfinance/detrain
-      - /mnt/data/detrain;python3
-      - /mnt/data/detrain/agent/main.py
+      - bash
+      - "-c"
+    args:
+      - >-
+        sleep infinity
     args:
       - ""
     params:

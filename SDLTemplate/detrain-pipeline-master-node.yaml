@@ -1,15 +1,11 @@
 ---
 version: "2.0"
 services:
-  detrain-servers-master-node:
-    image: pytorch/pytorch:2.3.0-cuda11.8-cudnn8-runtime
+  master-node:
+    image: a2nfinance/detrain-nodes:0.2.2
     expose:
-      - port: 80
-        as: 80
-        to:
-          - global: true
       - port: 5000
-        as: 5000
+        as: 80
         to:
           - global: true
       - port: 9999
@@ -18,52 +14,28 @@ services:
         to:
           - global: true
     command:
-      - apt-get
-      - install
-      - git;pip
-      - install
-      - fastapi;pip
-      - install
-      - fastapi;pip
-      - install
-      - "\"uvicorn[standard]\""
-      - gunicorn;pip
-      - install
-      - detrain;git
-      - clone
-      - https://github.com/a2nfinance/detrain
-      - /mnt/data/detrain;python3
-      - /mnt/data/detrain/agent/main.py
+      - bash
+      - "-c"
     args:
-      - ""
-    params:
-      storage:
-        data:
-          mount: /mnt/data
-          readOnly: false
+      - uvicorn main:app --host 0.0.0.0 --port 5000;sleep infinity
 profiles:
   compute:
-    detrain-servers-master-node:
+    master-node:
       resources:
         cpu:
-          units: 1
+          units: 2
         memory:
           size: 4GB
         storage:
-          - size: 2Gi
-          - name: data
-            size: 15Gi
-            attributes:
-              persistent: true
-              class: beta2
+          - size: 20GB
   placement:
     dcloud:
       pricing:
-        detrain-servers-master-node:
+        master-node:
           denom: uakt
           amount: 1000
 deployment:
-  detrain-servers-master-node:
+  master-node:
     dcloud:
-      profile: detrain-servers
+      profile: master-node
       count: 1

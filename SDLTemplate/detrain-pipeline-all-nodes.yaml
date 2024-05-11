@@ -1,0 +1,108 @@
+---
+version: "2.0"
+services:
+  master-node:
+    image: a2nfinance/detrain-nodes:0.2.2
+    expose:
+      - port: 5000
+        as: 80
+        to:
+          - global: true
+      - port: 9999
+        as: 9999
+        proto: tcp
+        to:
+          - global: true
+    command:
+      - bash
+      - "-c"
+    args:
+      - >-
+        uvicorn main:app --host 0.0.0.0 --port 5000;sleep infinity
+  worker-01:
+    image: a2nfinance/detrain-nodes:0.2.2
+    expose:
+      - port: 5000
+        as: 80
+        to:
+          - global: true
+    command:
+      - bash
+      - "-c"
+    args:
+      - >-
+        uvicorn main:app --host 0.0.0.0 --port 5000;sleep infinity
+  worker-02:
+    image: a2nfinance/detrain-nodes:0.2.2
+    expose:
+      - port: 5000
+        as: 80
+        to:
+          - global: true
+    command:
+      - bash
+      - "-c"
+    args:
+      - >-
+        uvicorn main:app --host 0.0.0.0 --port 5000;sleep infinity
+profiles:
+  compute:
+    master-node:
+      resources:
+        cpu:
+          units: 2
+        memory:
+          size: 4GB
+        storage:
+          - size: 20GB
+    worker-01:
+      resources:
+        cpu:
+          units: 2
+        memory:
+          size: 2GB
+        storage:
+          - size: 20GB
+        gpu:
+          units: 1
+          attributes:
+            vendor:
+              nvidia: 
+    worker-02:
+      resources:
+        cpu:
+          units: 2
+        memory:
+          size: 2GB
+        storage:
+          - size: 20GB
+        gpu:
+          units: 1
+          attributes:
+            vendor:
+              nvidia: 
+  placement:
+    dcloud:
+      pricing:
+        master-node:
+          denom: uakt
+          amount: 1000
+        worker-01:
+          denom: uakt
+          amount: 1000
+        worker-02:
+          denom: uakt
+          amount: 1000
+deployment:
+  master-node:
+    dcloud:
+      profile: master-node
+      count: 1
+  worker-01:
+    dcloud:
+      profile: worker-01
+      count: 1
+  worker-02:
+    dcloud:
+      profile: worker-02
+      count: 1
