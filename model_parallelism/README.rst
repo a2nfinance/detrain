@@ -24,14 +24,15 @@ Once installed, you can use DeTrain in your Python scripts like this:
 .. code-block:: python
 
     import torch.nn as nn
+    import torch
     import time
     import os
     from detrain.ppl.args_util import get_args
     from detrain.ppl.worker import run_worker
     from detrain.ppl.dataset_util import get_torchvision_dataset
     from shards_model import NNShard1, NNShard2
-    from torch.distributed.optim.optimizer import DistributedOptimizer
     import torch.optim as optim
+
     if __name__=="__main__":
         args = get_args()
         # Get args
@@ -40,12 +41,24 @@ Once installed, you can use DeTrain in your Python scripts like this:
         epochs = int(args.epochs)
         batch_size = int(args.batch_size)
         lr = float(args.lr)
-        device = "cpu"
 
+        for i in range(torch.cuda.device_count()):
+            print(torch.cuda.get_device_properties(i).name)
+
+        devices = []
+        workers = []
+        shards = [NNShard1, NNShard2]
         # Check devices
         if (args.gpu is not None):
-            device = "cuda:0"
-        
+            arr = args.gpu.split('_')
+            for dv in range(len(arr)):
+                if dv > 0:
+                    workers.append(f"worker{dv}")
+                    if int(arr[dv]) == 1:
+                        devices.append("cuda:0")
+                    else:
+                        devices.append("cpu")
+
         # Define optimizer & loss_fn
         loss_fn = nn.CrossEntropyLoss()
         optimizer_class = optim.SGD
@@ -56,6 +69,7 @@ Once installed, you can use DeTrain in your Python scripts like this:
 
         
         print(f"World_size: {world_size}, Rank: {rank}")
+        
         num_split = 4
         tik = time.time()
         run_worker(
@@ -63,9 +77,9 @@ Once installed, you can use DeTrain in your Python scripts like this:
             world_size, 
             (
                 args.split_size, 
-                ["worker1", "worker2"],
-                [device, device], 
-                [NNShard1, NNShard2]
+                workers,
+                devices, 
+                shards
             ), 
             train_dataloader, 
             test_dataloader, 

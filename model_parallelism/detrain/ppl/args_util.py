@@ -11,10 +11,7 @@ def get_args():
     parser.add_argument('--lr', default=1e-3, type=float, help='learning rate')
 
     ## Cluster settings
-    parser.add_argument('--gpu', default=None, type=int)
-    # parser.add_argument('--local_rank', default=-1, type=int, 
-    #                     help='local rank for distributed training')
+    parser.add_argument('--gpu', default=None, type=str)
     parser.add_argument("--model_name", default="trained_model", type=str, help='Name of the trained model to be saved')
-
     args = parser.parse_args()
     return args
