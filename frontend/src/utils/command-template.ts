@@ -8,13 +8,13 @@ export const getTensorParallelismCommand = (
     epochs: number,
     batch_size: number,
     lr: number,
-    useGPU: boolean,
+    useGPU: string,
     modelName: string
 ) => {
     let folderPath = filePath.slice(0, filePath.lastIndexOf("/"));
     let fileName = filePath.slice(filePath.lastIndexOf("/") + 1, filePath.length);
     let cd = `cd ${folderPath};`;
-    let torchrun = `torchrun --nnodes=${nnodes} --nproc_per_node=${nprocPerNode} --rdzv_id=${rdzvId} --rdzv-backend=${rdzvBackend} --rdzv_endpoint="${rdzvEndpoint}" ${fileName} ${useGPU ? "--gpu=1" : ""} --epochs=${epochs} --batch_size=${batch_size} --lr=${lr} --model_name="${modelName}";`
+    let torchrun = `torchrun --nnodes=${nnodes} --nproc_per_node=${nprocPerNode} --rdzv_id=${rdzvId} --rdzv-backend=${rdzvBackend} --rdzv_endpoint="${rdzvEndpoint}" ${fileName} --gpu="${useGPU}" --epochs=${epochs} --batch_size=${batch_size} --lr=${lr} --model_name="${modelName}";`
     return cd + torchrun
 }
 
@@ -62,13 +62,13 @@ export const getPipelineParallelismCommand = (
     epochs: number,
     batch_size: number,
     lr: number,
-    useGPU: boolean,
+    useGPU: string,
     modelName: string,
     nodeRank: number
 ) => {
     let folderPath = filePath.slice(0, filePath.lastIndexOf("/"));
     let fileName = filePath.slice(filePath.lastIndexOf("/") + 1, filePath.length);
     let cd = `cd ${folderPath};`;
-    let torchrun = `torchrun --nnodes=${nnodes} --nproc_per_node=${nprocPerNode} --node_rank=${nodeRank} --master_addr=${masterAddr} --master_port=${masterPort} ${fileName} ${useGPU ? "--gpu=1" : ""} --epochs=${epochs} --batch_size=${batch_size} --lr=${lr} --model_name="${modelName}"`
+    let torchrun = `torchrun --nnodes=${nnodes} --nproc_per_node=${nprocPerNode} --node_rank=${nodeRank} --master_addr=${masterAddr} --master_port=${masterPort} ${fileName} --gpu="${useGPU}" --epochs=${epochs} --batch_size=${batch_size} --lr=${lr} --model_name="${modelName}"`
     return cd + torchrun
 }

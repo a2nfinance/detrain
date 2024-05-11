@@ -59,9 +59,9 @@ export const useRemoteServer = () => {
 
     const downloadFile = async (remoteHostIP: string, filePath: string, masterNodeAgentPort: number) => {
         try {
-            let url = `//${remoteHostIP}:${masterNodeAgentPort}/download/`;
+            let url = `http://${remoteHostIP}:${masterNodeAgentPort}/download/`;
             if (masterNodeAgentPort === 80) {
-                url = `//${remoteHostIP}/download/`;
+                url = `//${remoteHostIP}:5000/download/`;
             }
             let options = {
                 method: 'POST',

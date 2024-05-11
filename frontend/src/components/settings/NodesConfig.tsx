@@ -2,7 +2,6 @@ import { useAppDispatch, useAppSelector } from "@/controller/hooks";
 import { setFormsProps } from "@/controller/setup/setupFormsSlice";
 import { useAkash } from "@/hooks/useAkash";
 import { headStyle } from "@/theme/layout";
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { useChain } from "@cosmos-kit/react-lite";
 import { Alert, Button, Card, Col, Divider, Form, Input, Row, Select, Space } from "antd";
 import { useEffect } from "react";

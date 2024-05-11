@@ -37,7 +37,10 @@ export const Review = () => {
             )
         }
 
-
+        let deviceArray = nodesForm.nodes.map(node => {
+            return node.gpu ? 1 : 0;
+        })
+        let deviceString = deviceArray.join("_");
         nodesForm.nodes.map((node, index) => {
             if (parallelForm.type === "pipeline") {
                 if (nodesForm.masterNode?.address) {
@@ -50,7 +53,7 @@ export const Review = () => {
                         parallelForm.epochs,
                         parallelForm.batchSize,
                         parallelForm.learningRate,
-                        node.gpu,
+                        deviceString,
                         parallelForm.modelName,
                         index
                     )
@@ -72,7 +75,7 @@ export const Review = () => {
                         parallelForm.epochs,
                         parallelForm.batchSize,
                         parallelForm.learningRate,
-                        node.gpu,
+                        deviceString,
                         parallelForm.modelName
                     )
                     let newCommand = command + trainCommand
