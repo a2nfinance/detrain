@@ -36,3 +36,9 @@ curl -d 'cd ~/detrain/model_parallelism/examples/tp/nn/; torchrun --nnodes=1 --n
 
 curl -d 'cd ~/detrain/model_parallelism/examples/tp/nn/;ls' -H "Content-Type: plain/text" -X POST http://35.240.232.243:5000/execute/
 ```
+
+```
+10.233.71.3
+10.233.102.159
+10.233.102.155
+```
