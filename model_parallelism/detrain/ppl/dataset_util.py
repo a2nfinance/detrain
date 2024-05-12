@@ -3,8 +3,12 @@ from torchvision import datasets
 from torchvision.transforms import ToTensor
 import torchvision.transforms as transforms
 
+#  Utility functions to return training and testing dataset.
 def get_torchvision_dataset(name, batch_size, distributed=False):
     if (name == "MNIST" and distributed == False):
+        # This dataset is used for examples
+
+        # Dataset for training
         training_data = datasets.FashionMNIST(
         root="data",
         train=True,
@@ -12,6 +16,7 @@ def get_torchvision_dataset(name, batch_size, distributed=False):
         transform=ToTensor()
         )
 
+        # Dataset for evaluation step
         test_data = datasets.FashionMNIST(
             root="data",
             train=False,
@@ -35,11 +40,15 @@ def get_torchvision_dataset(name, batch_size, distributed=False):
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ])
+
+        # Dataset for training
         train_dataset = datasets.ImageNet(
             root='data', 
             split="train",
             transform=transform
         )
+
+        # Dataset for evaluation step
         test_dataset = datasets.ImageNet(
             root='data', 
             split="eval",
@@ -49,6 +58,8 @@ def get_torchvision_dataset(name, batch_size, distributed=False):
         test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=True, num_workers=2)
         return (train_dataloader, test_dataloader)
     elif (name == "MNIST" and distributed == True):
+        # Support DP: the training dataset will be sharded across multiple devices.
+        # Not implemented yet.
         training_data = datasets.FashionMNIST(
         root="data",
         train=True,

@@ -7,6 +7,11 @@ def train_loop(dataloader, tp_model, loss_fn, optimizer, batch_size, device, ran
         
         X, y = X.to(device), y.to(device)
         pred = tp_model(X)
+        # A context manager that enables loss parallelism, 
+        # where efficient parallelized loss computation can be performed when the input is sharded on the class dimension. 
+        # Currently only the cross-entropy loss is supported. 
+        # More details see here
+        # https://pytorch.org/docs/stable/distributed.tensor.parallel.html#torch.distributed.tensor.parallel.loss_parallel
         with loss_parallel():
             loss = loss_fn(pred, y)
             loss.backward()

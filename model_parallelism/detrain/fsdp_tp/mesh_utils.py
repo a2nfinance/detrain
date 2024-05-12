@@ -1,6 +1,9 @@
 from torch.distributed.device_mesh import init_device_mesh
 import os
-# For example: cuda, (dp_size,tp_size), (dp, tp)
+
+# DeviceMesh is a higher level abstraction that manages ProcessGroup
+# Mode details, see https://pytorch.org/tutorials/recipes/distributed_device_mesh.html 
+# device_type: cuda or cpu
 def get_2d_mesh(device_type, tp_size):
     # Get from torchrun params
     _world_size = int(os.environ["WORLD_SIZE"])

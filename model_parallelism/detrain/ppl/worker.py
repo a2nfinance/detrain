@@ -2,11 +2,18 @@ import torch.distributed.rpc as rpc
 from detrain.ppl.master_node import run_master
 from detrain.ppl.dis_model import DistributedModel
 from torch.distributed.optim.optimizer import DistributedOptimizer
-
+# Each worker will be used for a model shard.
+# rank: node rank
+# world_size: total processes in the parallel training (number of nodes * number of processes per node)
 def run_worker(rank, world_size, model_params, train_dataloader, test_dataloader, loss_fn, optimized_class, epochs, batch_size, lr):
     # Higher timeout is added to accommodate for kernel compilation time in case of ROCm.
     options = rpc.TensorPipeRpcBackendOptions(num_worker_threads=256, rpc_timeout=300)
     
+    # Rank 0: a master node
+    # Rank > 0: worker nodes
+    # The master node is used for tensor offloading
+    # Worker nodes are used for training model shards.
+    # All nodes and processes must be initialized using RPC, then the training process will start.
     if rank == 0:
         print("--- Init master RPC")
         rpc.init_rpc(
@@ -16,21 +23,28 @@ def run_worker(rank, world_size, model_params, train_dataloader, test_dataloader
             rpc_backend_options=options
         )
         print("--- Done init master")
+
+        # Create an instance of DistributedModel
         model = DistributedModel(
-            # split size
+            # Split size
             model_params[0],
-            # workers
+            # Workers
             model_params[1],
-            # Devices
+            # Node devices
             model_params[2],
-            # Shards
+            # Model shards
             model_params[3]
         )
+
+        # Create a distributed optimizer based on a base optimizer python class.
         optimizer = DistributedOptimizer(
             optimized_class,
             model.parameter_rrefs(),
             lr=lr,
         )
+
+        # Run a master node.
+        # See masternode.py.
         run_master(model, train_dataloader, test_dataloader, loss_fn, optimizer, epochs, batch_size)
     else:
         print(f"--- Init worker {rank} RPC")

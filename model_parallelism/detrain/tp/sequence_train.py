@@ -9,6 +9,8 @@ def sequence_train_loop(dataloader, tp_model, loss_fn, optimizer, batch_size, de
         loss = loss_fn(pred, y)
         loss.backward()
         optimizer.step()
+
+        # Logs needed for node rank 0 only.
         if (rank == 0):
             if batch % 100 == 0:
                 loss, current = loss.item(), batch * batch_size + len(X)

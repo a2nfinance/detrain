@@ -13,6 +13,9 @@ def test_loop(dataloader, tp_model, loss_fn, device, rank):
     with torch.no_grad():
         for X, y in dataloader:
             X, y = X.to(device), y.to(device)
+            # A context manager that enables loss parallelism, 
+            # where efficient parallelized loss computation can be performed when the input is sharded on the class dimension. 
+            # Currently only the cross-entropy loss is supported.
             with loss_parallel():
                 pred = tp_model(X)
                 # Loss

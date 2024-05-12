@@ -11,13 +11,15 @@ def test_loop(dataloader, model_2d, loss_fn, device, rank):
     with torch.no_grad():
         for X, y in dataloader:
             X, y = X.to(device), y.to(device)
+            # A context manager that enables loss parallelism, 
+            # where efficient parallelized loss computation can be performed when the input is sharded on the class dimension. 
+            # Currently only the cross-entropy loss is supported.
             with loss_parallel():
                 pred = model_2d(X)
                 # Loss
                 model_2d_loss[0] += loss_fn(pred, y).item()
                 # Correct
                 model_2d_loss[1] += (pred.argmax(1) == y).type(torch.float).sum().item()
-
                 # Batches
                 model_2d_loss[2] += 1
                 # Size

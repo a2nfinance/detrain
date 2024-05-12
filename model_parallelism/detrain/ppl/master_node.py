@@ -5,8 +5,6 @@ from detrain.ppl.args_util import get_args
 
 def run_master(model, train_dataloader, test_dataloader, loss_fn, optimizer, epochs, batch_size):
     args = get_args()
-    # put the two model parts on worker1 and worker2 respectively
-    # Validate master node here
     for t in range(epochs):
         print(f"Epoch {t+1}\n-------------------------------")
         train_loop(train_dataloader, model, loss_fn, optimizer, batch_size)
