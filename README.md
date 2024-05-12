@@ -77,7 +77,7 @@ Ensure that DeTrain library is installed on your machines.
 
     - For TP and FSDP + TP training:
     ```
-    torchrun --nnodes=1 --nproc_per_node=2 --rdzv_id=101 --rdzv-backend=c10d --rdzv_endpoint="localhost:9999" main.py --gpu="0_0_0" --epochs=4 --batch_size=50 --lr=0.001 --model_name="ppl_04"
+    torchrun --nnodes=1 --node_rank=0 --nproc_per_node=2 --rdzv_id=101 --rdzv-backend=c10d --rdzv_endpoint="localhost:9999" main.py --gpu="0_0_0" --epochs=4 --batch_size=50 --lr=0.001 --model_name="ppl_04"
     ```
 
     If you have N nodes, rdzv_endpoint is the rendezvous backend endpoint: use ```localhost``` on the master node and use internal IP or public IP on the remaining nodes.
