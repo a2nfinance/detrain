@@ -15,25 +15,32 @@ from torch.distributed.tensor.parallel import (
 from torch.distributed._tensor import Shard
 
 if __name__=="__main__":
+    # Get torchrun args
     args = get_args()
     world_size = int(os.environ["WORLD_SIZE"])
-    # Get args
     epochs = int(args.epochs)
     batch_size = int(args.batch_size)
     lr = float(args.lr)
     device = "cpu"
+    work_rank = torch.distributed.get_rank()
 
     # Check devices
     if (args.gpu is not None):
-        device = "cuda"
+        arr = args.gpu.split('_')
+        for dv in range(len(arr)):
+            if dv == work_rank:
+                if int(arr[dv]) == 1:
+                    device = "cuda"
     
     # Define optimizer & loss_fn
     loss_fn = nn.CrossEntropyLoss(reduction="mean")
     optimizer_class = optim.SGD
     model = NeuralNetwork().to(device)
 
-   
+    # Create 1D device mesh
     mesh_shape = (world_size, )
+
+    # Return a Parallelize_module
     tp_model = get_tp_model(model, {
         "in_proj": ColwiseParallel(
             use_local_output=False,
@@ -51,7 +58,7 @@ if __name__=="__main__":
     # Create an optimizer for the parallelized module.
     optimizer = torch.optim.SGD(tp_model.parameters(), lr=lr)
     
-    # Dataloaders
+    # Training & testing dataloader
 
     (train_dataloader, test_dataloader) = get_torchvision_dataset("MNIST", batch_size)
 
@@ -68,4 +75,6 @@ if __name__=="__main__":
     )
     tok = time.time()
     print(f"Execution time = {tok - tik}")
+
+    # Save model
     save_model(model, args.model_name)

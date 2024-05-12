@@ -1,7 +1,7 @@
 import torch.nn as nn
 import time
 import os
-import sys
+import torch
 from detrain.ppl.args_util import get_args
 from detrain.ppl.dataset_util import get_torchvision_dataset
 from detrain.fsdp_tp.train_eval import train_eval
@@ -17,17 +17,22 @@ from torch.distributed.tensor.parallel import (
 from torch.distributed._tensor import Shard
 
 if __name__=="__main__":
+    # Get torchrun args
     args = get_args()
     world_size = int(os.environ["WORLD_SIZE"])
-    # Get args
     epochs = int(args.epochs)
     batch_size = int(args.batch_size)
     lr = float(args.lr)
     device = "cpu"
+    work_rank = torch.distributed.get_rank()
 
     # Check devices
     if (args.gpu is not None):
-        device = "cuda"
+        arr = args.gpu.split('_')
+        for dv in range(len(arr)):
+            if dv == work_rank:
+                if int(arr[dv]) == 1:
+                    device = "cuda"
     
 
     # Define optimizer & loss_fn

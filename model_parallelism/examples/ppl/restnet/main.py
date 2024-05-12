@@ -1,5 +1,6 @@
 import torch.nn as nn
 import time
+import torch
 from detrain.ppl.args_util import get_args
 from detrain.ppl.worker import run_worker
 from detrain.ppl.dis_model import DistributedModel
@@ -10,24 +11,39 @@ import torch.optim as optim
 # Define model here
 
 if __name__=="__main__":
+    # Get torchrun args
     args = get_args()
-
-    # Get args
     world_size = int(args.world_size)
     rank = int(args.rank)
     epochs = int(args.epochs)
     batch_size = int(args.batch_size)
-    device = "cpu"
 
-    # Check devices
+
+    # Check cuda device
+    for i in range(torch.cuda.device_count()):
+        print(torch.cuda.get_device_properties(i).name)
+
+    # Define params to create a new instance of DistributedModel
+    devices = []
+    workers = []
+    shards = [ResNetShard1, ResNetShard2]
+    
+    # Devices for model shards
     if (args.gpu is not None):
-        device = "cuda:0"
+        arr = args.gpu.split('_')
+        for dv in range(len(arr)):
+            if dv > 0:
+                workers.append(f"worker{dv}")
+                if int(arr[dv]) == 1:
+                    devices.append("cuda:0")
+                else:
+                    devices.append("cpu")
 
     model = DistributedModel(
         args.split_size, 
-        ["worker1", "worker2"],
-        [device, device], 
-        [ResNetShard1, ResNetShard2]
+        workers,
+        devices,
+        shards
     )
     
     # Define optimizer & loss_fn

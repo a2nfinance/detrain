@@ -1,6 +1,7 @@
 import torch.nn as nn  
 from base_model import NeuralNetwork
 
+# Shard 01
 class NNShard1(NeuralNetwork):
     """
     The first part of NeuralNetwork.
@@ -20,9 +21,11 @@ class NNShard1(NeuralNetwork):
         x = self.flatten(x)
         with self._lock:
             out =  self.seq(x)
+        # This log is used for testing only    
         # print(f"Run forward on worker[1] - Device: {self.device}")
         return out.cpu()
-    
+
+# Shard 02 
 class NNShard2(NeuralNetwork):
     """
     The first part of NeuralNetwork.
@@ -41,5 +44,6 @@ class NNShard2(NeuralNetwork):
         x = self.flatten(x)
         with self._lock:
             out =  self.seq(x)
+        # This log is used for testing only
         # print(f"Run forward on worker[2] - Device: {self.device}")
         return out.cpu()

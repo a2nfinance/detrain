@@ -15,25 +15,33 @@ from torch.distributed.tensor.parallel import (
 from torch.distributed._tensor import Shard
 
 if __name__=="__main__":
+    # Get torchrun args
     args = get_args()
     world_size = int(os.environ["WORLD_SIZE"])
-    # Get args
     epochs = int(args.epochs)
     batch_size = int(args.batch_size)
     lr = float(args.lr)
     device = "cpu"
+    work_rank = torch.distributed.get_rank()
 
     # Check devices
     if (args.gpu is not None):
-        device = "cuda"
+        arr = args.gpu.split('_')
+        for dv in range(len(arr)):
+            if dv == work_rank:
+                if int(arr[dv]) == 1:
+                    device = "cuda"
     
     # Define optimizer & loss_fn
     loss_fn = nn.CrossEntropyLoss()
     optimizer_class = optim.SGD
     model = NeuralNetwork().to(device)
 
-
+    # Create 1D device mesh
     mesh_shape = (world_size, )
+
+    # Return a Parallelize_modul
+    # Input or output layouts are based on dim 0
     sp_model = get_tp_model(model, {
         "in_proj": ColwiseParallel(
             input_layouts=Shard(0),
@@ -49,7 +57,7 @@ if __name__=="__main__":
     # Create an optimizer for the parallelized module.
     optimizer = torch.optim.AdamW(sp_model.parameters(), lr=lr, foreach=True)
     
-    # Dataloaders
+    # Training & testing dataloader
 
     (train_dataloader, test_dataloader) = get_torchvision_dataset("MNIST", batch_size)
 
