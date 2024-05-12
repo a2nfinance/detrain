@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 export const Item = ({ index, pipelineData }: {index: number, pipelineData: {_id: string, state: SetupFormState}}) => {
   const router = useRouter();
   return (
-    <Card key={`pipeline-${index}`} title={pipelineData.state.parallelForm.modelName}  headStyle={headStyle} style={{ margin: 5 }} extra={
+    <Card key={`pipeline-${index}`} title={pipelineData.state.parallelForm.modelName.toUpperCase()}  headStyle={headStyle} style={{ margin: 5 }} extra={
       <Space>
             <Button type='primary' onClick={() => router.push(`/pipeline/details/${pipelineData._id}`)}>Detail</Button>
       </Space>

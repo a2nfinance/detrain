@@ -26,7 +26,7 @@ export const MyPipelineList = () => {
                 onChange: (page) => {
                     console.log(page);
                 },
-                pageSize: 9,
+                pageSize: 6,
                 align: "center",
             }}
             dataSource={pipelines}

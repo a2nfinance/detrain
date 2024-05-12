@@ -29,7 +29,7 @@ export const LayoutProvider = (props: Props) => {
             <Sider width={250} onCollapse={() => setCollapsed(!collapsed)} collapsed={collapsed} style={{ background: colorBgContainer }}>
                 <div style={{ height: 50, margin: 16 }}>
                     {
-                        !collapsed ? <Image src={"/logo.png"} alt="dpay" preview={false} width={150} /> : <Image src={"/ICON.png"} alt="dpay" preview={false} width={50} height={50} />
+                        !collapsed ? <Image src={"/logo.png"} alt="DeTrain" preview={false} width={150} /> : <Image src={"/icon.png"} alt="DeTrain" preview={false} width={50} height={50} />
                     }
                 </div>
 
