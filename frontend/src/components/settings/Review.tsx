@@ -3,11 +3,12 @@ import { setFormsProps } from "@/controller/setup/setupFormsSlice"
 import { useRemoteServer } from "@/hooks/useRemoteServer";
 import { headStyle } from "@/theme/layout"
 import { cloneGitCommand, getPipelineParallelismCommand, getTensorParallelismCommand, pullGitCommand } from "@/utils/command-template";
-import { Button, Card, Col, Descriptions, Divider, Row, Space } from "antd"
+import { Button, Card, Col, Descriptions, Divider, Row, Space, Tag } from "antd"
 import { useCallback } from "react";
 import { TrainingLogs } from "../logs/TrainingLogs";
 import { actionNames, updateActionStatus } from "@/controller/process/processSlice";
 import { useDB } from "@/hooks/useDB";
+import { IPButton } from "../common/IPButton";
 
 
 export const Review = () => {
@@ -139,13 +140,27 @@ export const Review = () => {
             <Descriptions title="Nodes Settings" column={3} layout="vertical">
                 <Descriptions.Item label="Nodes">
                     <Space direction="vertical">
-                        {nodesForm.nodes.map(node => {
+                        {nodesForm.nodes.map((node, index) => {
                             return (
-                                <p key={`${node.ip}`}>{node.ip} | {node.gpu ? "GPU" : "CPU"}</p>
+                                <p key={`node-${index}`}>
+                                    <IPButton address={node.ip} />
+                                </p>
                             )
                         })}
                     </Space>
                 </Descriptions.Item>
+                <Descriptions.Item label="Device">
+                    <Space direction="vertical">
+                        {nodesForm.nodes.map((node, index) => {
+                            return (
+                                <p key={`device-${index}`}>
+                                    {node.gpu ? "GPU" : "CPU"}
+                                </p>
+                            )
+                        })}
+                    </Space>
+                </Descriptions.Item>
+
                 {
                     parallelForm.type === "pipeline" ? <Descriptions.Item label="Master node">
                         {
@@ -154,7 +169,8 @@ export const Review = () => {
                     </Descriptions.Item> : <Descriptions.Item label="Rendezvous backend">
                         <Space direction="vertical">
 
-                            <p>ID: {nodesForm.rendezvousBackend?.id} | Backend: {nodesForm.rendezvousBackend?.backend}</p>
+                            <p>ID: {nodesForm.rendezvousBackend?.id} </p>
+                            <p>Backend: {nodesForm.rendezvousBackend?.backend}</p>
                             <p>Host: {nodesForm.rendezvousBackend?.hostIP}:{nodesForm.rendezvousBackend?.port}</p>
 
                         </Space>
@@ -170,17 +186,17 @@ export const Review = () => {
                 <Descriptions.Item label="Clone or Pull request">
                     {trainingScriptForm.isClone ? "Clone" : "Pull"}
                 </Descriptions.Item>
-                <Descriptions.Item label="Destination">
+                <Descriptions.Item label="To folder">
                     {trainingScriptForm.toFolder}
                 </Descriptions.Item>
 
             </Descriptions>
             <Descriptions column={1} layout="vertical">
                 <Descriptions.Item label="Repo">
-                    {trainingScriptForm.repo}
+                    <Tag color="blue" onClick={() => window.open(trainingScriptForm.repo, "_blank")}>{trainingScriptForm.repo}</Tag>
                 </Descriptions.Item>
 
-                <Descriptions.Item label="Training file path">
+                <Descriptions.Item label="Training script path">
                     {trainingScriptForm.filePath}
                 </Descriptions.Item>
             </Descriptions>

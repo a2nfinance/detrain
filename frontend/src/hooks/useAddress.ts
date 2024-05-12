@@ -4,7 +4,7 @@ export const useAddress = () => {
     const getShortAddress = (address: string) => {
         return (
             address.slice(0,7).concat("....").concat(
-                address.slice(address.length - 4, address.length)
+                address.slice(address.length - 5, address.length)
             )
         )
     };

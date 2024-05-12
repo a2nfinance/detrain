@@ -3,7 +3,11 @@ import { setFormsProps } from "@/controller/setup/setupFormsSlice";
 import { headStyle } from "@/theme/layout";
 import { Button, Card, Col, Divider, Form, Input, Row, Select } from "antd";
 import { CgWebsite } from "react-icons/cg";
+import { CiServer } from "react-icons/ci";
+import { LuFileStack } from "react-icons/lu";
 import { MdOutlineMail } from "react-icons/md";
+import { VscServerProcess } from "react-icons/vsc";
+import { MdMoreTime } from "react-icons/md";
 export const ParallelTypes = () => {
     const { parallelForm } = useAppSelector(state => state.setupForms)
     const dispatch = useAppDispatch();
@@ -36,7 +40,7 @@ export const ParallelTypes = () => {
                     </Col>
                     <Col span={12}>
                         <Form.Item name="modelName" label="Model Name" rules={[{ required: true, message: 'Missing model name' }]}>
-                            <Input addonBefore={<MdOutlineMail />} size='large' />
+                            <Input size='large' />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -45,12 +49,12 @@ export const ParallelTypes = () => {
                 <Row gutter={12}>
                     <Col span={12}>
                         <Form.Item name="nnodes" label="Number of Nodes" rules={[{ required: true, message: 'Incorrect contact email' }]}>
-                            <Input type="number" addonBefore={<MdOutlineMail />} size='large' />
+                            <Input type="number" addonBefore={<CiServer />} size='large' />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
                         <Form.Item name="nprocPerNode" label="Number of processes per node" rules={[{ required: true, message: 'Incorrect contact email' }]}>
-                            <Input type="number" addonBefore={<MdOutlineMail />} size='large' />
+                            <Input type="number" addonBefore={<VscServerProcess />} size='large' />
                         </Form.Item>
                     </Col>
 
@@ -58,12 +62,12 @@ export const ParallelTypes = () => {
                 <Row gutter={12}>
                     <Col span={12}>
                         <Form.Item name="batchSize" label="Batch Size" rules={[{ required: true, message: 'Incorrect website URL' }]}>
-                            <Input type="number" addonBefore={<CgWebsite />} size='large' />
+                            <Input type="number" addonBefore={<LuFileStack />} size='large' />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
                         <Form.Item name="epochs" label="Epochs" rules={[{ required: true, message: 'Incorrect website URL' }]}>
-                            <Input type="number" addonBefore={<CgWebsite />} size='large' />
+                            <Input type="number" addonBefore={<MdMoreTime />} size='large' />
                         </Form.Item>
                     </Col>
                 </Row>

@@ -48,7 +48,7 @@ export const NodesConfig = () => {
                             {fields.map(({ key, name, ...restField }, index) => (
                                 <>
                                 <Row key={key} style={{ display: 'flex', marginBottom: 8 }} gutter={12}>
-                                    <Col span={16}>
+                                    <Col span={15}>
                                         <Form.Item
                                             label={index === 0 ? "Master node (address or public IP)" : (index === 1 ? "Worker node" : "")}
                                             {...restField}
@@ -66,8 +66,8 @@ export const NodesConfig = () => {
                                         </Form.Item>
 
                                     </Col>
-                                    <Col span={4}>
-                                        <Form.Item label={index === 0 ? "Agent Port" : (index === 1 ? "Agent port" : "")}
+                                    <Col span={5}>
+                                        <Form.Item label={index === 0 ? "Agent port" : (index === 1 ? "Agent port" : "")}
                                             {...restField}
                                             name={[name, 'agentPort']}
                                             rules={[{ required: true, message: 'Missing port' }]}>

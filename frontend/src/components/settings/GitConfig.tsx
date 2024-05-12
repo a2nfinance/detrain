@@ -3,7 +3,9 @@ import { setFormsProps } from "@/controller/setup/setupFormsSlice";
 import { headStyle } from "@/theme/layout";
 import { UserOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Divider, Form, Input, Row, Select, Space } from "antd";
-import { MdOutlineMail, MdPassword } from "react-icons/md";
+import { CiFolderOn } from "react-icons/ci";
+import { FaGithub } from "react-icons/fa";
+import { MdPassword } from "react-icons/md";
 export const GitConfig = () => {
     const { trainingScriptForm } = useAppSelector(state => state.setupForms)
     const dispatch = useAppDispatch();
@@ -28,7 +30,7 @@ export const GitConfig = () => {
                 <Row gutter={12}>
                     <Col span={12}>
                         <Form.Item name="repo" label="Git repository" rules={[{ required: true, message: 'Incorrect contact email' }]}>
-                            <Input addonBefore={<MdOutlineMail />} size='large' />
+                            <Input addonBefore={<FaGithub />} size='large' />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -44,7 +46,7 @@ export const GitConfig = () => {
                 <Row gutter={12}>
                     <Col span={12}>
                         <Form.Item name="toFolder" label="Destination" rules={[{ required: true, message: 'Incorrect contact email' }]}>
-                            <Input addonBefore={<MdOutlineMail />} size='large' />
+                            <Input addonBefore={<CiFolderOn />} size='large' />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
