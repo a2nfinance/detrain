@@ -11,19 +11,19 @@ export const SetupSteps = () => {
                 current={currentStep}
                 items={[
                     {
-                        title: 'General',
-                        description: "Select a parallelism type and setup training parameters."
+                        title: 'General settings',
+                        description: "Select a parallelism type and set up training hyperparameters."
                     },
                     {
                         title: 'Nodes Settings',
-                        description: "Add nodes for the training process"
+                        description: "Add nodes and define communication parameters for the training process."
                     },
                     {
                         title: 'Training Script',
-                        description: "Add github repository and setup training script file"
+                        description: "Add GitHub repository and set up the training script file."
                     },
                     {
-                        title: 'Review & Start training process',
+                        title: 'Review and start the training process',
 
                     },
                 ]}

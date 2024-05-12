@@ -23,7 +23,7 @@ export const ParallelTypes = () => {
             initialValues={parallelForm}
             onFinish={onFinish}
             layout='vertical'>
-            <Card title="General" headStyle={headStyle} extra={
+            <Card title="General settings" headStyle={headStyle} extra={
                 <Button type="primary" htmlType='submit' size='large'>Next</Button>
             }>
 

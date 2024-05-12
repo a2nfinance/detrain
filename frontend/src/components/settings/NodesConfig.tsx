@@ -110,14 +110,14 @@ export const NodesConfig = () => {
                     <Alert message="This setting enables worker nodes to communicate with the master node. The address can be a domain, localhost, or IP. If you use an internal IP for the master node address, ensure that all nodes are in the same local group. The master node port must be an open port." showIcon type="info" />
                     <br />
                     <Row gutter={12}>
-                        <Col span={12}>
+                        <Col span={15}>
                             <Form.Item name={["masterNode", "address"]} label="Address" rules={[{ required: true, message: 'Missing address' }]}>
-                                <Input type="string" addonBefore={<MdOutlineMail />} size='large' />
+                                <Input type="string" size='large' />
                             </Form.Item>
                         </Col>
-                        <Col span={12}>
+                        <Col span={5}>
                             <Form.Item name={["masterNode", "port"]} label="Port" rules={[{ required: true, message: 'Missing port' }]}>
-                                <Input type="number" addonBefore={<MdOutlineMail />} size='large' />
+                                <Input type="number"  size='large' />
                             </Form.Item>
                         </Col>
 
@@ -126,12 +126,12 @@ export const NodesConfig = () => {
                         <Row gutter={12}>
                             <Col span={12}>
                                 <Form.Item name={["rendezvousBackend", "id"]} label="ID" rules={[{ required: true, message: 'Missing ID' }]}>
-                                    <Input type="number" addonBefore={<CgWebsite />} size='large' />
+                                    <Input type="number" size='large' />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item name={["rendezvousBackend", "backend"]} label="Backend" rules={[{ required: true, message: 'Incorrect website URL' }]}>
-                                    <Input addonBefore={<CgWebsite />} size='large' />
+                                    <Input size='large' />
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -139,12 +139,12 @@ export const NodesConfig = () => {
 
                             <Col span={12}>
                                 <Form.Item name={["rendezvousBackend", "hostIP"]} label="Host" rules={[{ required: true, message: 'Missing ID' }]}>
-                                    <Input addonBefore={<CgWebsite />} size='large' />
+                                    <Input size='large' />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item name={["rendezvousBackend", "port"]} label="Port" rules={[{ required: true, message: 'Incorrect website URL' }]}>
-                                    <Input type="number" addonBefore={<CgWebsite />} size='large' />
+                                    <Input type="number" size='large' />
                                 </Form.Item>
                             </Col>
                         </Row>

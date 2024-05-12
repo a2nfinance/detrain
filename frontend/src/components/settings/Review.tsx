@@ -111,7 +111,7 @@ export const Review = () => {
 
     }, [])
     return (
-        <Card title="Review & Start training process" headStyle={headStyle} extra={
+        <Card title="Review & Start the training process" headStyle={headStyle} extra={
             <Space>
                 <Button type="primary" size='large' onClick={() => dispatch(setFormsProps({ att: "currentStep", value: 2 }))}>Back</Button>
 
