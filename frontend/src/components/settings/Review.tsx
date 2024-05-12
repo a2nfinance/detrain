@@ -61,28 +61,33 @@ export const Review = () => {
                     let newCommand = command + trainCommand;
                     console.log(newCommand);
                     dispatch(updateActionStatus({ actionName: actionNames.startTrainingAction, value: true }))
-                    sendCommand(node.ip, newCommand, `node.${index}.log`, index, node.agentPort);
+                    sendCommand(node.protocol, node.ip, newCommand, `node.${index}.log`, index, node.agentPort);
                 }
 
             } else {
                 if (nodesForm.rendezvousBackend?.id) {
+                    let hostAddress = nodesForm.rendezvousBackend?.hostIP + ":" + nodesForm.rendezvousBackend?.port;
+                    if (index === 0) {
+                        hostAddress = `localhost:${nodesForm.rendezvousBackend?.port}`;
+                    }
                     let trainCommand = getTensorParallelismCommand(
                         trainingScriptForm.filePath,
                         parallelForm.nnodes,
                         parallelForm.nprocPerNode,
                         nodesForm.rendezvousBackend?.id,
                         nodesForm.rendezvousBackend?.backend,
-                        nodesForm.rendezvousBackend?.hostIP + ":" + nodesForm.rendezvousBackend?.port,
+                        hostAddress,
                         parallelForm.epochs,
                         parallelForm.batchSize,
                         parallelForm.learningRate,
                         deviceString,
-                        parallelForm.modelName
+                        parallelForm.modelName,
+                        index
                     )
                     let newCommand = command + trainCommand
                     console.log(newCommand)
                     dispatch(updateActionStatus({ actionName: actionNames.startTrainingAction, value: true }))
-                    sendCommand(node.ip, newCommand, `node.${index}.log`, index, node.agentPort)
+                    sendCommand(node.protocol, node.ip, newCommand, `node.${index}.log`, index, node.agentPort)
                 }
 
             }
@@ -101,10 +106,11 @@ export const Review = () => {
             modelPath = `${trainingScriptForm.toFolder}/${modelPath}`;
         }
         console.log(modelPath)
-        let nodeIP = nodesForm.nodes[0].ip
+        let nodeIP = nodesForm.nodes[0].ip;
+        let protocol = nodesForm.nodes[0].protocol;
 
         if (nodeIP) {
-            downloadFile(nodeIP, modelPath, nodesForm.nodes[0].agentPort)
+            downloadFile(protocol, nodeIP, modelPath, nodesForm.nodes[0].agentPort)
         }
 
 

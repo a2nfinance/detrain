@@ -9,12 +9,13 @@ export const getTensorParallelismCommand = (
     batch_size: number,
     lr: number,
     useGPU: string,
-    modelName: string
+    modelName: string, 
+    index
 ) => {
     let folderPath = filePath.slice(0, filePath.lastIndexOf("/"));
     let fileName = filePath.slice(filePath.lastIndexOf("/") + 1, filePath.length);
     let cd = `cd ${folderPath};`;
-    let torchrun = `torchrun --nnodes=${nnodes} --nproc_per_node=${nprocPerNode} --rdzv_id=${rdzvId} --rdzv-backend=${rdzvBackend} --rdzv_endpoint="${rdzvEndpoint}" ${fileName} --gpu="${useGPU}" --epochs=${epochs} --batch_size=${batch_size} --lr=${lr} --model_name="${modelName}";`
+    let torchrun = `torchrun --nnodes=${nnodes} --node_rank=${index} --nproc_per_node=${nprocPerNode} --rdzv_id=${rdzvId} --rdzv-backend=${rdzvBackend} --rdzv_endpoint="${rdzvEndpoint}" ${fileName} --gpu="${useGPU}" --epochs=${epochs} --batch_size=${batch_size} --lr=${lr} --model_name="${modelName}";`
     return cd + torchrun
 }
 

@@ -16,7 +16,7 @@ export type SetupFormState = {
         akashOnly: boolean
     },
     nodesForm: {
-        nodes: {ip: string, gpu: boolean, agentPort: number}[],
+        nodes: {protocol:string, ip: string, gpu: boolean, agentPort: number}[],
         masterNode?: {
             address: string,
             port: number
@@ -56,7 +56,7 @@ export const initialState: SetupFormState = {
         akashOnly: false
     },
     nodesForm: {
-        nodes: [{ip: "", gpu: false, agentPort: 80}],
+        nodes: [{protocol: "https", ip: "", gpu: false, agentPort: 80}],
         masterNode: {
             address: "localhost",
             port: 9999
@@ -65,7 +65,7 @@ export const initialState: SetupFormState = {
             id: 101,
             backend: "c10d",
             hostIP: "localhost",
-            port: 8000
+            port: 9999
         }
 
     },
@@ -88,13 +88,13 @@ export const setupFormsSlice = createSlice({
         setFormsProps: (state: SetupFormState, action: PayloadAction<{ att: string, value: any }>) => {
             state[action.payload.att] = action.payload.value
             if (action.payload.att === "parallelForm") {
-                let nodes: {ip: string, gpu: boolean, agentPort: number}[] = state.nodesForm.nodes;
+                let nodes: {protocol: string, ip: string, gpu: boolean, agentPort: number}[] = state.nodesForm.nodes;
                 let len = nodes.length
                 if (state.parallelForm.nnodes < len) {
                     nodes = nodes.slice(0, state.parallelForm.nnodes)
                 } else {
                     for(let i = 0; i < state.parallelForm.nnodes - len; i++) {
-                        nodes.push({ip: "", gpu: false, agentPort: 80})
+                        nodes.push({protocol: "https", ip: "", gpu: false, agentPort: 80})
                     }
                 }
                 

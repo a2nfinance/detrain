@@ -48,7 +48,23 @@ export const NodesConfig = () => {
                             {fields.map(({ key, name, ...restField }, index) => (
                                 <>
                                 <Row key={key} style={{ display: 'flex', marginBottom: 8 }} gutter={12}>
-                                    <Col span={15}>
+                                <Col span={4}>
+                                        <Form.Item
+                                            label={index === 0 ? "Protocol" : (index === 1 ? "Protocol" : "")}
+                                            {...restField}
+                                            name={[name, 'protocol']}
+                                            rules={[{ required: true, message: 'HTTP or HTTPS' }]}
+                                        >
+                                            <Select size="large" options={[
+                                                { label: "https", value: "https" },
+                                                { label: "http", value: "http" },
+                                            ]}>
+
+                                            </Select>
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={11}>
+                                        
                                         <Form.Item
                                             label={index === 0 ? "Master node (address or public IP)" : (index === 1 ? "Worker node" : "")}
                                             {...restField}
@@ -66,7 +82,7 @@ export const NodesConfig = () => {
                                         </Form.Item>
 
                                     </Col>
-                                    <Col span={5}>
+                                    <Col span={4}>
                                         <Form.Item label={index === 0 ? "Agent port" : (index === 1 ? "Agent port" : "")}
                                             {...restField}
                                             name={[name, 'agentPort']}
@@ -123,15 +139,17 @@ export const NodesConfig = () => {
 
                     </Row></Card> :
                     <Card title="Rendezvous Backend">
+                        <Alert type="info" showIcon message={"Host address: Use localhost if you want to run multiple GPUs or CPUs on one machine. If you're using distributed nodes, use a domain, public IP, or internal IP. Ensure that the backend port is opened."} />
+                        <br/>
                         <Row gutter={12}>
                             <Col span={12}>
                                 <Form.Item name={["rendezvousBackend", "id"]} label="ID" rules={[{ required: true, message: 'Missing ID' }]}>
-                                    <Input type="number" size='large' />
+                                    <Input type="number" size='large' placeholder="101" />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item name={["rendezvousBackend", "backend"]} label="Backend" rules={[{ required: true, message: 'Incorrect website URL' }]}>
-                                    <Input size='large' />
+                                    <Input size='large' placeholder="c10d"/>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -139,12 +157,12 @@ export const NodesConfig = () => {
 
                             <Col span={12}>
                                 <Form.Item name={["rendezvousBackend", "hostIP"]} label="Host" rules={[{ required: true, message: 'Missing ID' }]}>
-                                    <Input size='large' />
+                                    <Input size='large' placeholder="localhost" />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item name={["rendezvousBackend", "port"]} label="Port" rules={[{ required: true, message: 'Incorrect website URL' }]}>
-                                    <Input type="number" size='large' />
+                                    <Input type="number" placeholder="9999" size='large' />
                                 </Form.Item>
                             </Col>
                         </Row>

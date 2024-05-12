@@ -26,11 +26,11 @@ export const useRemoteServer = () => {
     const dispatch = useAppDispatch();
     const { parallelForm, trainingScriptForm } = useAppSelector(state => state.setupForms)
 
-    const sendCommand = async (remoteHostIP: string, command: string, outputElementId: string, rank: number, agentPort: number) => {
+    const sendCommand = async (protocol: string, remoteHostIP: string, command: string, outputElementId: string, rank: number, agentPort: number) => {
         try {
-            let url = `//${remoteHostIP}:${agentPort}/execute/`;
+            let url = `${protocol}://${remoteHostIP}:${agentPort}/execute/`;
             if (agentPort === 80) {
-                url = `//${remoteHostIP}/execute/`;
+                url = `${protocol}://${remoteHostIP}/execute/`;
             }
             let options = {
                 method: 'POST',
@@ -57,11 +57,11 @@ export const useRemoteServer = () => {
 
     }
 
-    const downloadFile = async (remoteHostIP: string, filePath: string, masterNodeAgentPort: number) => {
+    const downloadFile = async (protocol: string, remoteHostIP: string, filePath: string, masterNodeAgentPort: number) => {
         try {
-            let url = `http://${remoteHostIP}:${masterNodeAgentPort}/download/`;
+            let url = `${protocol}://${remoteHostIP}:${masterNodeAgentPort}/download/`;
             if (masterNodeAgentPort === 80) {
-                url = `//${remoteHostIP}:5000/download/`;
+                url = `${protocol}://${remoteHostIP}:5000/download/`;
             }
             let options = {
                 method: 'POST',
