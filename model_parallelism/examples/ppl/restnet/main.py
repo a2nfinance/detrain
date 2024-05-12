@@ -1,6 +1,7 @@
 import torch.nn as nn
 import time
 import torch
+import os
 from detrain.ppl.args_util import get_args
 from detrain.ppl.worker import run_worker
 from detrain.ppl.dis_model import DistributedModel
@@ -13,8 +14,8 @@ import torch.optim as optim
 if __name__=="__main__":
     # Get torchrun args
     args = get_args()
-    world_size = int(args.world_size)
-    rank = int(args.rank)
+    world_size = int(os.environ["WORLD_SIZE"])
+    rank = int(os.environ["RANK"])
     epochs = int(args.epochs)
     batch_size = int(args.batch_size)
 

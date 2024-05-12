@@ -18,17 +18,17 @@ if __name__=="__main__":
     # Get torchrun args
     args = get_args()
     world_size = int(os.environ["WORLD_SIZE"])
+    node_rank = int(os.environ["RANK"])
     epochs = int(args.epochs)
     batch_size = int(args.batch_size)
     lr = float(args.lr)
     device = "cpu"
-    work_rank = torch.distributed.get_rank()
 
     # Check devices
     if (args.gpu is not None):
         arr = args.gpu.split('_')
         for dv in range(len(arr)):
-            if dv == work_rank:
+            if dv == node_rank:
                 if int(arr[dv]) == 1:
                     device = "cuda"
     
