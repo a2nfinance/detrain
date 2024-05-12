@@ -5,7 +5,7 @@ Our project embodies the main idea of developing a framework for distributed tra
 ## Demo information
 - [Frontend Application](https://console-detrain.a2n.finance)
 - [Video demo]()
-- [Docker Image](https://docker.io/library/detrain-nodes)
+- [DeTrain Agent - Docker image](https://hub.docker.com/r/a2nfinance/detrain-nodes)
 - [DeTrain python library](https://pypi.org/project/detrain/)
 
 
