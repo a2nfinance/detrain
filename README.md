@@ -13,33 +13,33 @@ For more detailed information on product features, you can refer to [our project
 <details>
   <summary>Click here to see demo screenshots</summary>
 
-| ![1_homepage.png](1_homepage.png) | 
+| ![1_homepage.png](frontend/public/docs/1_homepage.png) | 
 |:--:| 
 | *My Pipelines* |
  
-| ![2_general_settings.png](2_general_settings.png) | 
+| ![2_general_settings.png](frontend/public/docs/2_general_settings.png) | 
 |:--:| 
 | *New pipeline - General settings* |
 
-| ![3_node_config.png](3_node_config.png) | 
+| ![3_node_config.png](frontend/public/docs/3_node_config.png) | 
 |:--:| 
 | *New pipeline - PP training - Nodes settings* |
 
 
-| ![4_tensor_nodes.png](4_tensor_nodes.png) | 
+| ![4_tensor_nodes.png](frontend/public/docs/4_tensor_nodes.png) | 
 |:--:| 
 | *New pipeline - TP training - Nodes settings* |
 
 
-| ![5_training_script.png](5_training_script.png) | 
+| ![5_training_script.png](frontend/public/docs/5_training_script.png) | 
 |:--:| 
 | *New pipeline - Training script settings* |
 
-| ![6_review_and_train_model.png](6_review_and_train_model.png) | 
+| ![6_review_and_train_model.png](frontend/public/docs/6_review_and_train_model.png) | 
 |:--:| 
 | *New pipeline - Review & start training* |
 
-| ![7_code_base.png](7_code_base.png) | 
+| ![7_code_base.png](frontend/public/docs/7_code_base.png) | 
 |:--:| 
 | *DeTrain - Code base* |
   
