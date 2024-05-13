@@ -7,7 +7,7 @@ Transform into a fully-fledged framework that streamlines distributed training f
 Our project embodies the main idea of developing a framework for distributed training and model parallelism (MP). DeTrain includes tools and lightweight libraries using PyTorch to simplify distributed training pipelines
 
 ### 2. Demo information 
-- [Frontend Application](https://console-detrain.a2n.finance)
+- [Frontend Application](https://detrain-console.a2n.finance)
 - [Video demo]()
 - [Github](https://github.com/a2nfinance/detrain)
 ### 3. Architecture & Features
