@@ -10,6 +10,42 @@ Our project embodies the main idea of developing a framework for distributed tra
 - [Frontend Application](https://detrain-console.a2n.finance)
 - [Video demo]()
 - [Github](https://github.com/a2nfinance/detrain)
+
+<details>
+  <summary>Click here to see demo screenshots</summary>
+
+| ![1_homepage.png](https://detrain-console.a2n.finance/docs/1_homepage.png) | 
+|:--:| 
+| *My Pipelines* |
+ 
+| ![2_general_settings.png](https://detrain-console.a2n.finance/docs/2_general_settings.png) | 
+|:--:| 
+| *New pipeline - General settings* |
+
+| ![3_node_config.png](https://detrain-console.a2n.finance/docs/3_node_config.png) | 
+|:--:| 
+| *New pipeline - PP training - Nodes settings* |
+
+
+| ![4_tensor_nodes.png](https://detrain-console.a2n.finance/docs/4_tensor_nodes.png) | 
+|:--:| 
+| *New pipeline - TP training - Nodes settings* |
+
+
+| ![5_training_script.png](https://detrain-console.a2n.finance/docs/5_training_script.png) | 
+|:--:| 
+| *New pipeline - Training script settings* |
+
+| ![6_review_and_train_model.png](https://detrain-console.a2n.finance/docs/6_review_and_train_model.png) | 
+|:--:| 
+| *New pipeline - Review & start training* |
+
+| ![7_code_base.png](https://detrain-console.a2n.finance/docs/7_code_base.png) | 
+|:--:| 
+| *New pipeline - Code base* |
+  
+ </details>
+
 ### 3. Architecture & Features
 ![](frontend/public/docs/architecture.jpg)
 
