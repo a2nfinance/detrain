@@ -1,6 +1,6 @@
 ### 0. Vision
 
-Transform into a fully-fledged framework that streamlines distributed training for AI models utilizing Akash Network marketplace. 
+Transform into a fully-fledged framework that streamlines distributed training for AI models utilizing Akash Networks marketplace. 
 
 ### 1. Overview
 

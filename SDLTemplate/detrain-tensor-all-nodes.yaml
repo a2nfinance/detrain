@@ -1,15 +1,11 @@
 ---
 version: "2.0"
 services:
-  detrain-servers:
-    image: pytorch/pytorch:2.3.0-cuda11.8-cudnn8-runtime
+  node-rank-0:
+    image: a2nfinance/detrain-nodes:0.2.2
     expose:
-      - port: 80
-        as: 80
-        to:
-          - global: true
       - port: 5000
-        as: 5000
+        as: 80
         to:
           - global: true
       - port: 9999
@@ -23,46 +19,69 @@ services:
       - bash
       - "-c"
     args:
-      - >-
-        sleep infinity
+      - uvicorn main:app --host 0.0.0.0 --port 5000;sleep infinity
+  node-rank-1:
+    image: a2nfinance/detrain-nodes:0.2.2
+    expose:
+      - port: 5000
+        as: 80
+        to:
+          - global: true
+      - port: 9999
+        as: 9999
+        accept:
+          - 0.0.0.0/0
+        proto: tcp
+        to:
+          - global: true
+    command:
+      - bash
+      - "-c"
     args:
-      - ""
-    params:
-      storage:
-        data:
-          mount: /mnt/data
-          readOnly: false
+      - uvicorn main:app --host 0.0.0.0 --port 5000;sleep infinity
 profiles:
   compute:
-    detrain-servers:
+    node-rank-0:
       resources:
         cpu:
-          units: 1
+          units: 2
         memory:
-          size: 1GB
+          size: 4GB
         storage:
-          - size: 1Gi
-          - name: data
-            size: 15Gi
-            attributes:
-              persistent: true
-              class: beta2
+          - size: 20GB
         gpu:
           units: 1
           attributes:
             vendor:
-              nvidia:
-                - model: p100
-                  ram: 16Gi
-                  interface: pcie
+              nvidia: 
+    node-rank-1:
+      resources:
+        cpu:
+          units: 2
+        memory:
+          size: 4GB
+        storage:
+          - size: 20GB
+        gpu:
+          units: 1
+          attributes:
+            vendor:
+              nvidia: 
   placement:
     dcloud:
       pricing:
-        detrain-servers:
+        node-rank-0:
+          denom: uakt
+          amount: 1000
+        node-rank-1:
           denom: uakt
           amount: 1000
 deployment:
-  detrain-servers:
+  node-rank-0:
     dcloud:
-      profile: detrain-servers
-      count: 2
+      profile: node-rank-0
+      count: 1
+  node-rank-1:
+    dcloud:
+      profile: node-rank-1
+      count: 1

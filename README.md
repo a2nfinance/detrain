@@ -39,7 +39,7 @@ Examples for training are currently included in ```model_parallelism/detrain/exa
 - For building the DeTrain python library
     - **PyTorch RPC and Distributed packages** for distributed training functionalities.
 
-- For infrastructure: Akash Network's GPU/CPU marketplace.
+- For infrastructure: Akash Networks marketplace.
 
 ## Installation
 
