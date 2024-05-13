@@ -29,7 +29,7 @@ Examples for training are currently included in ```model_parallelism/detrain/exa
 ## Technology
 - For building the DeTrain console:
     - **NextJS** and Ant Design for the frontend.
-    - **Akash JS** for interacting with Akash.
+    - **Akash JS** for interacting with Akash networks.
     - **Cosmos Kit** for blockchain integration.
     - **Mongoose** for database management.
 - For building the Agent software:
@@ -86,7 +86,7 @@ Ensure that DeTrain library is installed on your machines.
 
 ## Run examples using the DeTrain console
 Use this tool; you don't need to set up any environment, SSH to a remote node, and run commands manually. Follow these steps:
-- Deploy new nodes on Akash cloud.
+- Deploy new nodes on Akash.
 - Use [DeTrain console](detrain-console.a2n.finance) to create new pipelines.
 
 
