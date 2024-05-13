@@ -41,7 +41,7 @@ For more detailed information on product features, you can refer to [our project
 
 | ![7_code_base.png](7_code_base.png) | 
 |:--:| 
-| *New pipeline - Code base* |
+| *DeTrain - Code base* |
   
  </details>
 

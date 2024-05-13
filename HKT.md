@@ -42,7 +42,7 @@ Our project embodies the main idea of developing a framework for distributed tra
 
 | ![7_code_base.png](https://detrain-console.a2n.finance/docs/7_code_base.png) | 
 |:--:| 
-| *New pipeline - Code base* |
+| *DeTrain - Code base* |
   
  </details>
 
