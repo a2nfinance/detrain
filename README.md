@@ -89,6 +89,37 @@ Use this tool; you don't need to set up any environment, SSH to a remote node, a
 - Deploy new nodes on Akash.
 - Use [DeTrain console](detrain-console.a2n.finance) to create new pipelines.
 
+## Screenshots
+| ![1_homepage.png](1_homepage.png) | 
+|:--:| 
+| *My Pipelines* |
+ 
+| ![2_general_settings.png](2_general_settings.png) | 
+|:--:| 
+| *New pipeline - General settings* |
+
+| ![3_node_config.png](3_node_config.png) | 
+|:--:| 
+| *New pipeline - PP training - Nodes settings* |
+
+
+| ![4_tensor_nodes.png](4_tensor_nodes.png) | 
+|:--:| 
+| *New pipeline - TP training - Nodes settings* |
+
+
+| ![5_training_script.png](5_training_script.png) | 
+|:--:| 
+| *New pipeline - Training script settings* |
+
+| ![6_review_and_train_model.png](6_review_and_train_model.png) | 
+|:--:| 
+| *New pipeline - Review & start training* |
+
+| ![7_code_base.png](7_code_base.png) | 
+|:--:| 
+| *New pipeline - Code base* |
+
 
 
 
