@@ -22,7 +22,7 @@ The DeTrain project comprises four components:
     - A Docker image including Python with support for Cuda 11.8, FastAPI, Uvicorn, Gunicorn, and DeTrain libraries
     - A simple software program that assists nodes in communicating with each other and with the DeTrain console.
 - **DeTrain Console:** This web application aids developers in designing custom pipelines for training AI models tailored to user-defined infrastructure.
-- **Sample SDL Templates & Example Code for Distributed Training Jobs:** This component provides examples to guide developers on how to define infrastructure for TP & TP training.
+- **Sample SDL Templates & Example Code for Distributed Training Jobs:** This component provides examples to guide developers on how to define infrastructure for PP & TP training.
 
 Examples for training are currently included in ```model_parallelism/detrain/examples``` for easy reference. However, they will be maintained in a [different repository](https://github.com/a2nfinance/detrain-example) later on.
 
@@ -38,6 +38,8 @@ Examples for training are currently included in ```model_parallelism/detrain/exa
     - **Docker** for containerization.
 - For building the DeTrain python library
     - **PyTorch RPC and Distributed packages** for distributed training functionalities.
+
+- For infrastructure: Akash Network's GPU/CPU marketplace.
 
 ## Installation
 
