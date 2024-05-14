@@ -8,7 +8,7 @@ Our project embodies the main idea of developing a framework for distributed tra
 
 ### 2. Demo information 
 - [Frontend Application](https://detrain-console.a2n.finance)
-- [Video demo]()
+- [Video demo](https://www.youtube.com/watch?v=YaSvU51iQg0)
 - [Github](https://github.com/a2nfinance/detrain)
 
 <details>

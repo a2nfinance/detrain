@@ -4,7 +4,7 @@ Our project embodies the main idea of developing a framework for distributed tra
 
 ## Demo information
 - [Frontend Application](https://detrain-console.a2n.finance)
-- [Video demo]()
+- [Video demo](https://www.youtube.com/watch?v=YaSvU51iQg0)
 - [DeTrain Agent - Docker image](https://hub.docker.com/r/a2nfinance/detrain-nodes)
 - [DeTrain python library](https://pypi.org/project/detrain/)
 
@@ -123,7 +123,7 @@ Ensure that DeTrain library is installed on your machines.
 ## Run examples using the DeTrain console
 Use this tool; you don't need to set up any environment, SSH to a remote node, and run commands manually. Follow these steps:
 - Deploy new nodes on Akash.
-- Use [DeTrain console](detrain-console.a2n.finance) to create new pipelines.
+- Use [DeTrain console](https://detrain-console.a2n.finance) to create new pipelines.
 
 
 
