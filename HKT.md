@@ -51,13 +51,16 @@ Our project embodies the main idea of developing a framework for distributed tra
 
 The DeTrain project comprises four components:
 - **DeTrain Python Lightweight Library:** This library, currently in the early development phase, is constructed based on the PyTorch Distributed package and PyTorch RPC package. It simplifies the development of distributed AI model training code by reducing complexity. DeTrain primarily focuses on MP training, with two types: Tensor parallelism (TP) and Pipeline parallelism (PP).
-    - To facilitate communication between training nodes in PP training, DeTrain utilizes remote methods of the RPC package
-    - For distributed optimization, DeTrain employs distributed autograd and the loss_parallel context
+    - This library inherits robust features from Torch, allowing it to train models on distributed nodes, each node with one or more GPUs/CPUs.
+    - To facilitate communication between processes in PP training, DeTrain utilizes remote methods from the RPC package.
+    - To support communication between processes in TP training, the rendezvous backend (Torch distributed elastic) is used.
+    - For loss computation, we use distributed autograd and parallel contexts.
+    - For optimization, we use the distributed optimizer, one of the Torch distributed packages.
     - To integrate with Data Parallelism (DP), DeTrain utilizes DeviceMesh 2D.
 - **Agent:** This component consists of two parts:
     - A Docker image including Python with support for Cuda 11.8, FastAPI, Uvicorn, Gunicorn, and DeTrain libraries
     - A simple software program that assists nodes in communicating with each other and with the DeTrain console.
-- **DeTrain Console:** This web application aids developers in designing custom pipelines for training AI models tailored to user-defined infrastructure.
+- **DeTrain Console:** This web application aids developers in designing custom pipelines for training AI models tailored to user-defined infrastructure. Currently, this tool has not yet implemented the full potential of the DeTrain Python library. It supports training on multiple nodes, each with one GPU.
 - **Sample SDL Templates & Example Code for Distributed Training Jobs:** This component provides examples to guide developers on how to define infrastructure for PP & TP training.
 
 ### 4. How it works

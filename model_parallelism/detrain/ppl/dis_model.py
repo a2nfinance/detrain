@@ -37,11 +37,11 @@ class DistributedModel(nn.Module):
         out_futures = []
         for x in iter(xs.split(self.split_size, dim=0)):
             x_rref = RRef(x)
-            # Forward input data to the first model shard on the first distributed node.
+            # Forward input data to the first model shard on the first worker node.
             y_rref = self.rrefs[0].remote().forward(x_rref)
             for i in range(len(self.rrefs)):
                 if i != 0:
-                    # Forward output to the next model shard on the next distributed node.
+                    # Forward output to the next model shard on the next worker node.
                     # This output is sent asynchronously.      
                     y_rref = self.rrefs[i].rpc_async().forward(y_rref)
                     out_futures.append(y_rref)
