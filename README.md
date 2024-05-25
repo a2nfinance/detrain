@@ -10,6 +10,13 @@ Our project embodies the main idea of developing a framework for distributed tra
 
 For more detailed information on product features, you can refer to [our project description on Dorahacks.](https://dorahacks.io/buidl/12615)
 
+This repository will be separated into different repositories for easier maintenance after 2024/05/25.
+
+- [DeTrain Python Library](https://github.com/a2nfinance/detrain-python-lib)
+- [DeTrain Console](https://github.com/a2nfinance/detrain-console)
+- [DeTrain Agent](https://github.com/a2nfinance/detrain-agent)
+- [DeTrain Example](https://github.com/a2nfinance/detrain-example)
+
 <details>
   <summary>Click here to see demo screenshots</summary>
 
